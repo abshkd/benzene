@@ -1,6 +1,6 @@
 # Django settings for benzene project.
 
-import os, glob
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -8,6 +8,10 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
+
+SITE_NAME = 'Benzene Reference' #the name of your site. it can includes spaces. not the URL
+
+SITE_ADDRESS = 'www.benzenereference.net' #the URL of your site, without any protocol at the beginning
 
 MANAGERS = ADMINS
 
@@ -35,8 +39,6 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
-
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -47,17 +49,12 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.getcwd() + '/static/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
-
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+MEDIA_URL = 'http://' + SITE_ADDRESS + '/static/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'j4(!0&*=f^7o9(qb*$p@t7$%nqy7fls19)bu+@007jmtj9*%cf'
@@ -66,26 +63,17 @@ SECRET_KEY = 'j4(!0&*=f^7o9(qb*$p@t7$%nqy7fls19)bu+@007jmtj9*%cf'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
 ROOT_URLCONF = 'benzene.urls'
-
-def get_dirs():
-	path = os.getcwd()
-	d = []
-	for file in glob.glob('*'):
-		if os.path.isdir(os.path.join(path, file)):
-			d.append(path + file + '/templates')
-	return tuple(d)
 		
 TEMPLATE_DIRS = (os.getcwd() + '/core/templates',)
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -96,15 +84,18 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+    #'django.contrib.sites'			might need for API
     'django.contrib.messages',
 	'benzene.core',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
 )
 
 AUTHENTICATION_BACKENDS = (
-    'benzene.auth_backends.CustomUserModelBackend',
+    'benzene.core.auth_backends.CustomUserModelBackend',
 )
 
 CUSTOM_USER_MODEL = 'core.CustomUser'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/news/'

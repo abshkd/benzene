@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, UserManager
 class CustomUser(User):
 	avatar = models.URLField()
 	passkey = models.CharField(max_length=50)
+	stylesheet = models.URLField()
 	objects = UserManager()
 
 class UnconfirmedUser(models.Model):

@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+
 import core.views
 
 # Uncomment the next two lines to enable the admin:
@@ -8,9 +9,11 @@ import core.views
 
 urlpatterns = patterns('',
 	('^$', core.views.home),
-	('^registration/$', core.views.reg),
+	('^register/$', core.views.reg),
 	('^confirm/(\w{14,26})', core.views.confirm),
 	('^success/$', core.views.success),
+	('^news/$', core.views.news),
+	('^login/$', 'django.contrib.auth.views.login', {'template_name' : 'login.html'}),
 	('^test/$', core.views.test),
     # Example:
     # (r'^benzene/', include('benzene.foo.urls')),

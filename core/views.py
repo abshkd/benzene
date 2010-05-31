@@ -1,25 +1,35 @@
 # core views
 import random
 
-from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
-from models import CustomUser, UnconfirmedUser
+from django.template import RequestContext
+
 from forms import RegForm
+from models import CustomUser, UnconfirmedUser
+
 
 def confirm(request, data):
 	data = str(data)
-	user = UnconfirmedUser.objects.get(identifier=data)
-	if user:
-		CustomUser.objects.create_user(user.username, user.email, user.password)
-		user.delete()
-		return HttpResponseRedirect('/')
+	unconfirmed = UnconfirmedUser.objects.get(identifier=data)
+	if unconfirmed:
+		CustomUser.objects.create_user(unconfirmed.username, unconfirmed.email, unconfirmed.password)
+		user = authenticate(username=unconfirmed.username, password=unconfirmed.password)
+		unconfirmed.delete()
+		login(request, user)
+		return HttpResponseRedirect('/news/')
 	else:
 		return HttpResponse("FU Scammer")
 		
-
 def home(request):
 	return render_to_response('visitor_home.html', {})
+
+@login_required	
+def news(request):
+	return HttpResponse('This will be the news page')
 	
 def reg(request):
 	if request.method == 'POST':
@@ -33,8 +43,15 @@ def reg(request):
 				u = UnconfirmedUser(username = cd['username'], email = cd['email'], password = cd['password'], identifier = data)
 				u.save()
 				send_mail('User Confirmation', data, 'noreply@example.com', [cd['email']])
-				return HttpResponseRedirect('/success')
-	return render_to_response('registration.html', {'form' : RegForm()})
+				return HttpResponseRedirect('/success/')
+	return render_to_response('registration.html', {'form' : RegForm()}, context_instance = RequestContext(request))
+
+def rand_str():
+	string = ''
+	set = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+	for character in range(random.randint(15,25)):
+		string += random.choice(set)
+	return string
 	
 def success(request):
 	return HttpResponse('Success!')
@@ -42,11 +59,6 @@ def success(request):
 def test(request):
 	return HttpResponse("woot")
 	
-def rand_str():
-	string = ''
-	set = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-	for character in range(random.randint(15,25)):
-		string += random.choice(set)
-	return string
+
 		
 	
