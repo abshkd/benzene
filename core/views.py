@@ -27,7 +27,7 @@ def reg(request):
 		if form.is_valid():
 			emails_match = form.cleaned_data['email'] == form.cleaned_data['email_again']
 			passwords_match = form.cleaned_data['password'] == form.cleaned_data['password_again']
-			if email_match and passwords_match:
+			if emails_match and passwords_match:
 				cd = form.cleaned_data
 				data = rand_str()
 				u = UnconfirmedUser(username = cd['username'], email = cd['email'], password = cd['password'], identifier = data)
