@@ -1,0 +1,5 @@
+The primary goals of Project Benzene are to: 
+-provide an alternative to the PHP based tracker frontends such as TBDev and Gazelle, 
+-utilize a MVC framework to create a more organized and modular tracker platform, 
+-establish a platform for users to share modules (apps) that they write, and promote collaboration on addition to the codebase, 
+-remain easy for users to install and modify, but not at the sake of performance 
