@@ -107,4 +107,4 @@ AUTHENTICATION_BACKENDS = (
     'benzene.auth_backends.CustomUserModelBackend',
 )
 
-CUSTOM_USER_MODEL = 'accounts.CustomUser'
+CUSTOM_USER_MODEL = 'core.CustomUser'
