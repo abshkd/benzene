@@ -14,7 +14,10 @@ urlpatterns = patterns('',
 	('^success/$', core.views.success),
 	('^news/$', core.views.news),
 	('^login/$', 'django.contrib.auth.views.login', {'template_name' : 'login.html'}),
+	('^logout/$', core.views.logout_view),
 	('^test/$', core.views.test),
+	('^temphome/$', core.views.temphome),
+	('^torrents/$', core.views.torrents),
     # Example:
     # (r'^benzene/', include('benzene.foo.urls')),
 

@@ -2,7 +2,7 @@
 import random
 
 from django.core.mail import send_mail
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -10,6 +10,8 @@ from django.template import RequestContext
 
 from forms import RegForm
 from models import CustomUser, UnconfirmedUser
+import tools
+import parts
 
 
 def confirm(request, data):
@@ -39,25 +41,30 @@ def reg(request):
 			passwords_match = form.cleaned_data['password'] == form.cleaned_data['password_again']
 			if emails_match and passwords_match:
 				cd = form.cleaned_data
-				data = rand_str()
+				data = tools.rand_str()
 				u = UnconfirmedUser(username = cd['username'], email = cd['email'], password = cd['password'], identifier = data)
 				u.save()
 				send_mail('User Confirmation', data, 'noreply@example.com', [cd['email']])
 				return HttpResponseRedirect('/success/')
 	return render_to_response('registration.html', {'form' : RegForm()}, context_instance = RequestContext(request))
 
-def rand_str():
-	string = ''
-	set = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-	for character in range(random.randint(15,25)):
-		string += random.choice(set)
-	return string
-	
+
 def success(request):
 	return HttpResponse('Success!')
 	
 def test(request):
 	return HttpResponse("woot")
+
+def temphome(request):
+	return render_to_response('temphome.html', context_instance = RequestContext(request))
+
+def torrents(request):
+	pass
+
+def logout_view(request):
+	logout(request)
+	return HttpResponseRedirect("/")
+		
 	
 
 		
