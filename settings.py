@@ -95,7 +95,10 @@ AUTHENTICATION_BACKENDS = (
 
 CUSTOM_USER_MODEL = 'core.CustomUser'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if DEBUG:
+	EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+	EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/news/'
+LOGIN_REDIRECT_URL = '/profile/'

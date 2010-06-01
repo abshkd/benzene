@@ -8,7 +8,7 @@ class CustomUser(User):
 	objects = UserManager()
 
 class UnconfirmedUser(models.Model):
-	username = models.CharField(max_length=30)
+	username = models.CharField(max_length=30, unique=True)
 	password = models.CharField(max_length=128)
-	email = models.EmailField()
-	identifier = models.CharField(max_length=26)
+	email = models.EmailField(unique=True)
+	identifier = models.CharField(max_length=26, unique=True)
