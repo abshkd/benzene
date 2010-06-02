@@ -11,7 +11,7 @@ ADMINS = (
 
 SITE_NAME = 'Benzene Reference' #the name of your site. it can includes spaces. not the URL
 
-SITE_ADDRESS = 'www.benzenereference.net' #the URL of your site, without any protocol at the beginning
+SITE_ADDRESS = '192.168.1.100:8000' #the URL of your site, without any protocol at the beginning
 
 MANAGERS = ADMINS
 
@@ -59,6 +59,8 @@ MEDIA_URL = 'http://' + SITE_ADDRESS + '/static/'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'j4(!0&*=f^7o9(qb*$p@t7$%nqy7fls19)bu+@007jmtj9*%cf'
 
+SITE_ID = 1
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -87,6 +89,7 @@ INSTALLED_APPS = (
     #'django.contrib.sites'			might need for API
     'django.contrib.messages',
 	'benzene.core',
+	'solango',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -101,6 +104,9 @@ else:
 	EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 LOGIN_URL = '/login/'
-
 LOGIN_REDIRECT_URL = '/profile/'
+
+SOLR_ROOT = '/home/eric/apache-solr-1.4.0/example/'
+SOLR_SCHEMA_PATH = SOLR_ROOT + 'solr/conf/schema.xml'
+SOLR_DATA_DIR = SOLR_ROOT + 'solr/data'
 

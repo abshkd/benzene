@@ -10,7 +10,7 @@ from django.template import RequestContext
 
 from forms import RegForm
 from models import CustomUser, UnconfirmedUser
-import tools
+import util
 
 def confirm(request, data):
 	data = str(data)
@@ -18,6 +18,8 @@ def confirm(request, data):
 	if unconfirmed:
 		CustomUser.objects.create_user(unconfirmed.username, unconfirmed.email, unconfirmed.password)
 		user = authenticate(username=unconfirmed.username, password=unconfirmed.password)
+		user.user_name = unconfirmed.username
+		user.save()
 		unconfirmed.delete()
 		login(request, user)
 		return HttpResponseRedirect('/profile/')
@@ -40,8 +42,8 @@ def logout_view(request):
 @login_required
 def profile(request, uid = 0):
 	if uid == 0:
-		uid = request.user.id
-	return HttpResponse(CustomUser.objects.get(id=uid).username)
+		return HttpResponseRedirect('/profile/' + str(request.user.id))
+	return render_to_response('internal.html', {'user': request.user})
 	
 def reg(request):
 	form = RegForm()
@@ -52,7 +54,7 @@ def reg(request):
 			passwords_match = form.cleaned_data['password'] == form.cleaned_data['password_again']
 			if emails_match and passwords_match:
 				cd = form.cleaned_data
-				data = tools.rand_str()
+				data = util.rand_str()
 				u = UnconfirmedUser(username = cd['username'], email = cd['email'], password = cd['password'], identifier = data)
 				u.save()
 				send_mail('User Confirmation', data, 'noreply@example.com', [cd['email']])
@@ -62,7 +64,9 @@ def reg(request):
 				form.errors.append('Your emails or passwords do not match')
 	return render_to_response('registration.html', {'form' : form}, context_instance = RequestContext(request))
 
-
+def torrents_view(request):
+	return render_to_response('internal.html', {})
+	
 def success(request):
 	try:
 		email = request.session['email']

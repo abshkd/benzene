@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 
 import core.views
+import settings
 
 # Uncomment the next two lines to enable the admin:
 #from django.contrib import admin
@@ -17,6 +18,7 @@ urlpatterns = patterns('',
 	('^profile/(?P<uid>\d*)', core.views.profile),
 	('^profile/edit/$', core.views.edit_profile),
 	('^logout/$', core.views.logout_view),
+	('^torrents/$', core.views.torrents_view),
 	('^test/$', core.views.test),
 	
     # Example:
