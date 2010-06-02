@@ -75,7 +75,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'benzene.urls'
 		
-TEMPLATE_DIRS = (os.getcwd() + '/core/templates',)
+TEMPLATE_DIRS = (os.getcwd() + '/core/templates')
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -101,4 +101,6 @@ else:
 	EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 LOGIN_URL = '/login/'
+
 LOGIN_REDIRECT_URL = '/profile/'
+

@@ -18,6 +18,7 @@ urlpatterns = patterns('',
 	('^profile/edit/$', core.views.edit_profile),
 	('^logout/$', core.views.logout_view),
 	('^test/$', core.views.test),
+	
     # Example:
     # (r'^benzene/', include('benzene.foo.urls')),
 

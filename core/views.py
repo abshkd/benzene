@@ -10,7 +10,7 @@ from django.template import RequestContext
 
 from forms import RegForm
 from models import CustomUser, UnconfirmedUser
-
+import tools
 
 def confirm(request, data):
 	data = str(data)
@@ -52,7 +52,7 @@ def reg(request):
 			passwords_match = form.cleaned_data['password'] == form.cleaned_data['password_again']
 			if emails_match and passwords_match:
 				cd = form.cleaned_data
-				data = rand_str()
+				data = tools.rand_str()
 				u = UnconfirmedUser(username = cd['username'], email = cd['email'], password = cd['password'], identifier = data)
 				u.save()
 				send_mail('User Confirmation', data, 'noreply@example.com', [cd['email']])
@@ -62,13 +62,7 @@ def reg(request):
 				form.errors.append('Your emails or passwords do not match')
 	return render_to_response('registration.html', {'form' : form}, context_instance = RequestContext(request))
 
-def rand_str():
-	string = ''
-	set = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789'
-	for character in range(random.randint(15,25)):
-		string += random.choice(set)
-	return string
-	
+
 def success(request):
 	try:
 		email = request.session['email']
@@ -78,6 +72,8 @@ def success(request):
 	
 def test(request):
 	return HttpResponseRedirect("/")
+
+
 	
 
 		

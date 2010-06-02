@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block header %}
+	<div id="logo">
+		<a href="#"><img src="#" alt="Benzene logo" /></a>
+	</div>
+	<div id="navigation">
+		<ul class="nav">
+			<li><a href="{% url core.views.home %}">Home</a></li>
+			<li><a href="{% url core.views.torrents %}">Torrents</a></li>
+		</ul>
+	</div>
+	<div id="userinfo">
+		<img id="userinfo-avatar" src="{{user.avatar}}" alt="user avatar" />		
+		<ul id="userinfo-username">
+			<li><a href="/profile">{{user.username}}</a></li>
+			<li><a href="/profile/edit">Edit</a></li>
+			<li><a href="/logout/">Logout</a></li>
+		</ul>
+		<ul id="userinfo-ratio-stats">
+			<li>User Info [ratio stats] here?</li>
+		</ul>
+	</div>
+{% endblock header %}
+

@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block body %}
 {% if form.errors %}
 <p>Please correct the error{{ forms.errors|pluralize }} below.</p>
 {% endif %}
@@ -7,3 +9,4 @@
 </ul>
 <input type="submit" value="Submit">
 </form>
+{% endblock %}
