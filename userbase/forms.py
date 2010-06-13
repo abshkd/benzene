@@ -36,7 +36,11 @@ class RegForm(forms.Form):
 		return email
 		
 class EditProfileForm(forms.Form):
-	stylesheet = forms.URLField()
+	stylesheet = forms.URLField(required=False)
+	avatar = forms.URLField(required=False)
+	about_text = forms.CharField(required=False, widget=forms.TextField)
+	email = forms.EmailField(required=False)
+	password = forms.CharField(required=False, max_length=30, widget=forms.PasswordInput)
 	
 	
 	

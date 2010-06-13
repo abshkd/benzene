@@ -18,9 +18,6 @@ def confirm(request, data):
 	if unconfirmed:
 		CustomUser.objects.create_user(unconfirmed.username, unconfirmed.email, unconfirmed.password)
 		user = authenticate(username=unconfirmed.username, password=unconfirmed.password)
-		user.user_name = unconfirmed.username
-		user.e_mail = unconfirmed.email
-		user.save()
 		unconfirmed.delete()
 		login(request, user)
 		return HttpResponseRedirect('/profile/')

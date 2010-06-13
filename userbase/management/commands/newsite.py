@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from benzene.userbase.models import CustomUser, Rank
 
 class Command(BaseCommand):
+	args = ''
 	help = 'Creates the first user (sysops) of a benzene-powered site'
 	
 	def handle(self, *args, **options):
@@ -16,4 +17,5 @@ class Command(BaseCommand):
 		sysop = CustomUser.objects.create_user(username, email, password)
 		sysop.rank = 'SYS'
 		sysop.save()
+		
 		
