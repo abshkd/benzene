@@ -77,7 +77,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'benzene.urls'
 		
-TEMPLATE_DIRS = (os.getcwd() + '/core/templates')
+TEMPLATE_DIRS = (os.getcwd() + '/userbase/templates')
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -88,15 +88,15 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     #'django.contrib.sites'			might need for API
     'django.contrib.messages',
-	'benzene.core',
+	'benzene.userbase',
 	'solango',
 )
 
 AUTHENTICATION_BACKENDS = (
-    'benzene.core.auth_backends.CustomUserModelBackend',
+    'benzene.userbase.auth_backends.CustomUserModelBackend',
 )
 
-CUSTOM_USER_MODEL = 'core.CustomUser'
+CUSTOM_USER_MODEL = 'userbase.CustomUser'
 
 if DEBUG:
 	EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

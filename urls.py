@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-import core.views
+import userbase.views
 import settings
 
 # Uncomment the next two lines to enable the admin:
@@ -9,17 +9,17 @@ import settings
 
 
 urlpatterns = patterns('',
-	('^$', core.views.home),
-	('^register/$', core.views.reg),
-	('^confirm/(\w{14,26})', core.views.confirm),
-	('^success/$', core.views.success),
+	('^$', userbase.views.home),
+	('^register/$', userbase.views.reg),
+	('^confirm/(\w{14,26})', userbase.views.confirm),
+	('^success/$', userbase.views.success),
 	('^login/$', 'django.contrib.auth.views.login', {'template_name' : 'login.html'}),
-	('^profile/$', core.views.profile),
-	('^profile/(?P<uid>\d*)', core.views.profile),
-	('^profile/edit/$', core.views.edit_profile),
-	('^logout/$', core.views.logout_view),
-	('^torrents/$', core.views.torrents_view),
-	('^test/$', core.views.test),
+	('^profile/$', userbase.views.profile),
+	('^profile/(?P<user_name>.*)', userbase.views.profile),
+	('^profile/edit/$', userbase.views.edit_profile),
+	('^logout/$', userbase.views.logout_view),
+	('^torrents/$', userbase.views.torrents_view),
+	('^test/$', userbase.views.test),
 	
     # Example:
     # (r'^benzene/', include('benzene.foo.urls')),
