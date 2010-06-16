@@ -1,9 +1,8 @@
 import re
-
 from django import forms
-
+from haystack.query import SearchQuerySet as sqs
 from models import  CustomUser, UnconfirmedUser
-from solango import connection
+
 
 class RegForm(forms.Form):
 	email = forms.EmailField()
@@ -22,7 +21,7 @@ class RegForm(forms.Form):
 	
 	def clean_username(self):
 		username = self.cleaned_data['username']
-		if connection.select(user_name = username).count or UnconfirmedUser.objects.filter(username = username):
+		if sqs().models(CustomUser).filter(content=username).count or UnconfirmedUser.objects.filter(username = username):
 			raise forms.ValidationError("Username already taken")
 		p = re.compile('\w{,20}')
 		if p.match(username).span() != (0, len(username)) or len(username)==0:
@@ -31,7 +30,7 @@ class RegForm(forms.Form):
 
 	def clean_email(self):
 		email = self.cleaned_data['email']
-		if connection.select(e_mail = email).count or UnconfirmedUser.objects.filter(email = email):
+		if sqs().models(CustomUser).filter(content=email).count or UnconfirmedUser.objects.filter(email = email):
 			raise forms.ValidationError("An account already exists with this email")
 		return email
 		

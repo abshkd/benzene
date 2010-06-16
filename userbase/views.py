@@ -1,13 +1,11 @@
 # core views
 import random
-
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-
 from forms import RegForm
 from models import CustomUser, UnconfirmedUser
 import util
@@ -48,7 +46,6 @@ def reg(request):
 	if request.method == 'POST':
 		form = RegForm(request.POST)
 		if form.is_valid():
-			data = form.cleaned_data
 			cd = form.cleaned_data
 			data = util.rand_str()
 			u = UnconfirmedUser(username = cd['username'], email = cd['email'], password = cd['password'], identifier = data)

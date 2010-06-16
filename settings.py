@@ -77,19 +77,15 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'benzene.urls'
 		
-TEMPLATE_DIRS = (os.getcwd() + '/userbase/templates')
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+TEMPLATE_LOADERS = ('django.template.loaders.app_directories.Loader',) #add cached when appropriate
 
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    #'django.contrib.sites'			might need for API
     'django.contrib.messages',
 	'benzene.userbase',
-	'solango',
+	'haystack',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -106,7 +102,8 @@ else:
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/profile/'
 
-SOLR_ROOT = '/home/eric/apache-solr-1.4.0/example/'
-SOLR_SCHEMA_PATH = SOLR_ROOT + 'solr/conf/schema.xml'
-SOLR_DATA_DIR = SOLR_ROOT + 'solr/data'
+HAYSTACK_SITECONF = 'benzene.search_sites'
+HAYSTACK_SEARCH_ENGINE = 'solr'
+HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
+HAYSTACK_LIMIT_TO_REGISTERED_MODELS = False
 
