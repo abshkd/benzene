@@ -44,6 +44,7 @@ def profile(request, user_name = ''):
 def reg(request):
 	form = RegForm()
 	if request.method == 'POST':
+		x = request.POST
 		form = RegForm(request.POST)
 		if form.is_valid():
 			cd = form.cleaned_data

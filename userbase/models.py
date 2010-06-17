@@ -12,7 +12,7 @@ RANKS = (
 	('SYS', 'Sysops'),
 		)	
 					
-class CustomUser(User):	
+class CustomUser(User):			
 	user_name = models.CharField(max_length=20, unique=True)
 	e_mail = models.EmailField(unique=True)
 	rank = models.CharField(max_length=3, choices=RANKS, default='U')
