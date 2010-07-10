@@ -21,13 +21,13 @@ urlpatterns = patterns('',
 	('^torrents/$', userbase.views.torrents_view),
 	('^test/$', userbase.views.test),
 	
-    # Example:
-    # (r'^benzene/', include('benzene.foo.urls')),
+	# Example:
+	# (r'^benzene/', include('benzene.foo.urls')),
 
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-    # to INSTALLED_APPS to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
+	# to INSTALLED_APPS to enable admin documentation:
+	# (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    # Uncomment the next line to enable the admin:
-     #(r'^admin/', include(admin.site.urls)),
+	# Uncomment the next line to enable the admin:
+	 #(r'^admin/', include(admin.site.urls)),
 )

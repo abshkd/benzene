@@ -6,7 +6,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+	# ('Your Name', 'your_email@domain.com'),
 )
 
 SITE_NAME = 'Benzene Reference' #the name of your site. it can includes spaces. not the URL
@@ -16,14 +16,14 @@ SITE_ADDRESS = '192.168.1.100:8000' #the URL of your site, without any protocol 
 MANAGERS = ADMINS
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'benzene',                      # Or path to database file if using sqlite3.
-        'USER': 'eric',                      # Not used with sqlite3.
-        'PASSWORD': 'abc123',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+		'NAME': 'benzene',					  # Or path to database file if using sqlite3.
+		'USER': 'eric',					  # Not used with sqlite3.
+		'PASSWORD': 'abc123',				  # Not used with sqlite3.
+		'HOST': '',					  # Set to empty string for localhost. Not used with sqlite3.
+		'PORT': '',					  # Set to empty string for default. Not used with sqlite3.
+	}
 }
 
 # Local time zone for this installation. Choices can be found here:
@@ -63,16 +63,16 @@ SITE_ID = 1
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
+	'django.template.loaders.filesystem.Loader',
+	'django.template.loaders.app_directories.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
 )
 
 ROOT_URLCONF = 'benzene.urls'
@@ -80,16 +80,16 @@ ROOT_URLCONF = 'benzene.urls'
 TEMPLATE_LOADERS = ('django.template.loaders.app_directories.Loader',) #add cached when appropriate
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
 	'benzene.userbase',
 	'haystack',
 )
 
 AUTHENTICATION_BACKENDS = (
-    'benzene.userbase.auth_backends.CustomUserModelBackend',
+	'benzene.userbase.auth_backends.CustomUserModelBackend',
 )
 
 CUSTOM_USER_MODEL = 'userbase.CustomUser'

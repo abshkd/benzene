@@ -15,8 +15,8 @@ from solango import settings
 
 
 def get_model_key(model):
-    return '%s%s%s' % (model._meta.app_label, settings.SEARCH_SEPARATOR ,model._meta.module_name)
+	return '%s%s%s' % (model._meta.app_label, settings.SEARCH_SEPARATOR ,model._meta.module_name)
 
 def get_model_from_key(type):
-    app_label, module_name = type.split(settings.SEARCH_SEPARATOR)
-    return get_model(app_label, module_name)
+	app_label, module_name = type.split(settings.SEARCH_SEPARATOR)
+	return get_model(app_label, module_name)

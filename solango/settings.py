@@ -26,32 +26,32 @@ SOLR_DEFAULT_OPERATOR = getattr(settings, "SOLR_DEFAULT_OPERATOR", "OR")
 
 ### Default Sorting criteria
 SEARCH_SORT_PARAMS = getattr(settings, "SEARCH_SORT_PARAMS", {
-        # "field direction": "anchor" The anchor for display purposes
-        "score desc": "Relevance" 
+		# "field direction": "anchor" The anchor for display purposes
+		"score desc": "Relevance" 
 })
 
 ### Default Facet Settings
 SEARCH_FACET_PARAMS =  getattr(settings, "SEARCH_FACET_PARAMS", [
-    ("facet", "true"),             # Basic faceting
-    ("facet.field", "model"),      # Facet by model
-    
-    # date faceting
-    #("facet.date", "date"),      # Replace date with the name of your solr date field
-    #("facet.date.start", "2000-01-01T00:00:00.000Z"),
-    #("facet.date.end", "NOW/DAY+1DAY"),
-    #("facet.date.gap", "+1YEAR"),
+	("facet", "true"),			 # Basic faceting
+	("facet.field", "model"),	  # Facet by model
+	
+	# date faceting
+	#("facet.date", "date"),	  # Replace date with the name of your solr date field
+	#("facet.date.start", "2000-01-01T00:00:00.000Z"),
+	#("facet.date.end", "NOW/DAY+1DAY"),
+	#("facet.date.gap", "+1YEAR"),
 ])
 
 ### strftime format strings for displaying faceting links.
 SEARCH_FACET_DATE_FORMATS = getattr(settings, "SEARCH_FACET_DATE_FORMATS", {
-    'DAY': '%e %b %Y',
-    'MONTH': '%B %Y',
-    'YEAR': '%Y',
+	'DAY': '%e %b %Y',
+	'MONTH': '%B %Y',
+	'YEAR': '%Y',
 })
 
 SEARCH_HL_PARAMS = getattr(settings, "SEARCH_HL_PARAMS" ,[
-    ("hl", "true"),      # basic highlighting
-    ("hl.fl", "text"),   # What field to highlight
+	("hl", "true"),	  # basic highlighting
+	("hl.fl", "text"),   # What field to highlight
 ])
 
 # Lucene Special Characters
