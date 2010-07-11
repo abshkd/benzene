@@ -4,9 +4,9 @@ from haystack.query import SearchQuerySet as sqs
 from models import  CustomUser, UnconfirmedUser
 
 class RegForm(forms.Form):
-	email_again = forms.EmailField()
-	email = forms.EmailField()
 	username = forms.CharField(max_length=20)
+	email = forms.EmailField()
+	email_again = forms.EmailField()
 	password = forms.CharField(max_length=30, widget = forms.PasswordInput)
 	password_again = forms.CharField(max_length=30, widget = forms.PasswordInput)
 	
