@@ -19,8 +19,8 @@ DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 		'NAME': 'benzene',					  # Or path to database file if using sqlite3.
-		'USER': 'eric',					  # Not used with sqlite3.
-		'PASSWORD': 'abc123',				  # Not used with sqlite3.
+		'USER': 'benzene_user',					  # Not used with sqlite3.
+		'PASSWORD': '',				  # Not used with sqlite3.
 		'HOST': '',					  # Set to empty string for localhost. Not used with sqlite3.
 		'PORT': '',					  # Set to empty string for default. Not used with sqlite3.
 	}
@@ -106,5 +106,3 @@ HAYSTACK_SITECONF = 'benzene.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'solr'
 HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
 HAYSTACK_LIMIT_TO_REGISTERED_MODELS = False
-
-CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
