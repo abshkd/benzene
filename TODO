@@ -1,0 +1,12 @@
+Things to do to complete Userbase:
+
+-put links on the login and register pages back to the home page
+-create top bar with navigation and user info (profile stuff)
+-create template for individual user pages (shows info about user)
+-create template and finish form code for "Edit Profile" page
+-add a "startup" script that makes an initial user and makes them staff
+-template the staff page
+-implement either tastypie or piston as API
+-caching...
+-documentation (We will not continue onto another app until userbase is sufficiently documented)
+-finalize protocol for userbase interacting with other apps data (the problem of showing the # of forum posts on profile page)
