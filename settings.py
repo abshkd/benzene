@@ -62,8 +62,8 @@ SECRET_KEY = 'j4(!0&*=f^7o9(qb*$p@t7$%nqy7fls19)bu+@007jmtj9*%cf'
 SITE_ID = 1
 
 # List of callables that know how to import templates from various sources.
+#add cached when appropriate
 TEMPLATE_LOADERS = (
-	'django.template.loaders.filesystem.Loader',
 	'django.template.loaders.app_directories.Loader',
 )
 
@@ -76,8 +76,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'benzene.urls'
-		
-TEMPLATE_LOADERS = ('django.template.loaders.app_directories.Loader',) #add cached when appropriate
 
 INSTALLED_APPS = (
 	'django.contrib.auth',
@@ -86,6 +84,7 @@ INSTALLED_APPS = (
 	'django.contrib.messages',
 	'benzene.userbase',
 	'haystack',
+	'queued_search',
 )
 
 AUTHENTICATION_BACKENDS = (

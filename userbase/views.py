@@ -8,11 +8,11 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from forms import RegForm
 from models import CustomUser, UnconfirmedUser
-import util
+import utils
 
-def confirm(request, data):
-	data = str(data)
-	unconfirmed = UnconfirmedUser.objects.get(identifier=data)
+def confirm(request, code):
+	code = str(code)
+	unconfirmed = UnconfirmedUser.objects.get(identifier=code)
 	if unconfirmed:
 		CustomUser.objects.create_user(unconfirmed.username, unconfirmed.email, unconfirmed.password)
 		user = authenticate(username=unconfirmed.username, password=unconfirmed.password)
@@ -47,11 +47,11 @@ def reg(request):
 		x = request.POST
 		form = RegForm(request.POST)
 		if form.is_valid():
-			cd = form.cleaned_data
-			data = util.rand_str()
-			u = UnconfirmedUser(username = cd['username'], email = cd['email'], password = cd['password'], identifier = data)
+			cd = form.cleaned_code
+			code = utils.rand_str()
+			u = UnconfirmedUser(username = cd['username'], email = cd['email'], password = utils.create_password(cd['password']), identifier = code)
 			u.save()
-			send_mail('User Confirmation', data, 'noreply@example.com', [cd['email']])
+			send_mail('User Confirmation', code, 'noreply@example.com', [cd['email']])
 			request.session['email'] = cd['email']
 			return HttpResponseRedirect('/success/')
 	return render_to_response('registration.html', {'form' : form}, context_instance = RequestContext(request))

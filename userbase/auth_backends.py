@@ -4,6 +4,10 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db.models import get_model
 
 class CustomUserModelBackend(ModelBackend):
+	'''Makes request.user (in views) return a CustomUser instead of a User.
+	Code originally detailed at http://scottbarnham.com/blog/2008/08/21/extending-the-django-user-model-with-inheritance/
+	
+	'''
 	def authenticate(self, username=None, password=None):
 		try:
 			user = self.user_class.objects.get(username=username)
