@@ -1,5 +1,4 @@
 from django.contrib.auth.models import UserManager
-from models import CustomUser
 from utils import create_password
 
 class CustomUserManager(UserManager):
@@ -8,9 +7,11 @@ class CustomUserManager(UserManager):
 		Password will normally be already hashed from user confirmation.
 		
 		'''
+		
+		#might need fixing to more closely mirror create_user in UserManager
 		if not already_hashed:
 			password = create_password(password)
-		c = CustomUser()
+		c = self.model()
 		c.username = username
 		c.user_name = username
 		c.email = email

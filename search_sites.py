@@ -1,7 +1,7 @@
 import haystack
 from haystack.indexes import RealTimeSearchIndex
 from queued_search.indexes import QueuedSearchIndex
-from settings input DEBUG
+from settings import DEBUG
 
 haystack.autodiscover()
 
