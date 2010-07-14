@@ -14,13 +14,12 @@ def confirm(request, code):
 	code = str(code)
 	unconfirmed = UnconfirmedUser.objects.get(identifier=code)
 	if unconfirmed:
-		CustomUser.objects.create_user(unconfirmed.username, unconfirmed.email, unconfirmed.password)
-		user = authenticate(username=unconfirmed.username, password=unconfirmed.password)
+		new_user = CustomUser.objects.create_user(unconfirmed.username, unconfirmed.email, unconfirmed.password)
 		unconfirmed.delete()
-		login(request, user)
+		utils.login_user(request, new_user)
 		return HttpResponseRedirect('/profile/')
 	else:
-		return HttpResponse("FU Scammer")
+		return HttpResponse("Sorry, you confirmation code doesn't exist")
 
 @login_required		
 def edit_profile(request):
@@ -47,7 +46,7 @@ def reg(request):
 		x = request.POST
 		form = RegForm(request.POST)
 		if form.is_valid():
-			cd = form.cleaned_code
+			cd = form.cleaned_data
 			code = utils.rand_str()
 			u = UnconfirmedUser(username = cd['username'], email = cd['email'], password = utils.create_password(cd['password']), identifier = code)
 			u.save()

@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.contrib.auth.models import UserManager
 from utils import create_password
 
@@ -9,6 +10,7 @@ class CustomUserManager(UserManager):
 		'''
 		
 		#might need fixing to more closely mirror create_user in UserManager
+		now = datetime.now()
 		if not already_hashed:
 			password = create_password(password)
 		c = self.model()
@@ -17,5 +19,10 @@ class CustomUserManager(UserManager):
 		c.email = email
 		c.e_mail = email
 		c.password = password
+		c.is_staff = False
+		c.is_active = True
+		c.is_superuser = False
+		c.last_login = now
+		c.date_joined = now
 		c.save()
 		return c
