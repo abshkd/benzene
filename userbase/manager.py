@@ -9,7 +9,6 @@ class CustomUserManager(UserManager):
 		
 		'''
 		
-		#might need fixing to more closely mirror create_user in UserManager
 		now = datetime.now()
 		if not already_hashed:
 			password = create_password(password)

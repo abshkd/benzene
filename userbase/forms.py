@@ -25,6 +25,18 @@ class RegForm(forms.Form):
 			raise forms.ValidationError("You entered 2 different passwords")
 		return cd
 		
+class ConfirmForm(forms.Form):
+	confirmation_key = forms.CharField(max_length=26)
+	
+	def clean(self):
+		cd = self.cleaned_data
+		user = UnconfirmedUser.objects.get(identifier=cd['confirmation_key'])
+		if not user:
+			raise forms.ValidationError("The confirmation key was not valid")
+		else:
+			cd['unconfirmed'] = user
+		return cd
+		
 class EditProfileForm(forms.Form):
 	stylesheet = forms.URLField(required=False)
 	avatar = forms.URLField(required=False)

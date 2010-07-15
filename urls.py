@@ -11,7 +11,7 @@ import settings
 urlpatterns = patterns('',
 	('^$', userbase.views.home),
 	('^register/$', userbase.views.reg),
-	('^confirm/(\w{14,26})', userbase.views.confirm),
+	('^confirm/$', userbase.views.confirm),
 	('^success/$', userbase.views.success),
 	('^login/$', 'django.contrib.auth.views.login', {'template_name' : 'login.html'}),
 	('^profile/$', userbase.views.profile),

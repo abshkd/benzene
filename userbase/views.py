@@ -6,11 +6,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from forms import RegForm
+from forms import RegForm, ConfirmForm
 from models import CustomUser, UnconfirmedUser
 import utils
 
-def confirm(request, code):
+'''def confirm(request, code):
 	code = str(code)
 	unconfirmed = UnconfirmedUser.objects.get(identifier=code)
 	if unconfirmed:
@@ -19,7 +19,20 @@ def confirm(request, code):
 		utils.login_user(request, new_user)
 		return HttpResponseRedirect('/profile/')
 	else:
-		return HttpResponse("Sorry, you confirmation code doesn't exist")
+		return HttpResponse("Sorry, you confirmation code doesn't exist")'''
+		
+def confirm(request):
+	form = ConfirmForm()
+	if request.method == 'POST':
+		form = ConfirmForm(request.POST)
+		if form.is_valid():
+			unconfirmed = form.cleaned_data['unconfirmed']
+			new_user = CustomUser.objects.create_user(unconfirmed.username, unconfirmed.email, unconfirmed.password)
+			unconfirmed.delete()
+			utils.login_user(request, new_user)
+			return HttpResponseRedirect('/profile/')
+	return render_to_response('registration.html', {'form' : form}, context_instance = RequestContext(request))
+	#registration template used on purpose, it is very generic, maybe 'confirm.html' template later if pages need to differ
 
 @login_required		
 def edit_profile(request):
@@ -43,7 +56,6 @@ def profile(request, user_name = ''):
 def reg(request):
 	form = RegForm()
 	if request.method == 'POST':
-		x = request.POST
 		form = RegForm(request.POST)
 		if form.is_valid():
 			cd = form.cleaned_data
