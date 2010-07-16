@@ -19,7 +19,7 @@ import utils
 		utils.login_user(request, new_user)
 		return HttpResponseRedirect('/profile/')
 	else:
-		return HttpResponse("Sorry, you confirmation code doesn't exist")'''
+		return HttpResponse("Sorry, your confirmation code doesn't exist")'''
 		
 def confirm(request):
 	form = ConfirmForm()
