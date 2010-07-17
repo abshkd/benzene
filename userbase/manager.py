@@ -16,7 +16,6 @@ class CustomUserManager(UserManager):
 		c.username = username
 		c.user_name = username
 		c.email = email
-		c.e_mail = email
 		c.password = password
 		c.is_staff = False
 		c.is_active = True

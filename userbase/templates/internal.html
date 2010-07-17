@@ -11,8 +11,8 @@
 	<div id="userinfo">
 		<img id="userinfo-avatar" src="{{user.avatar}}" alt="user avatar" />		
 		<ul id="userinfo-username">
-			<li><a href="/profile">{{user.user_name}}</a></li>
-			<li><a href="/profile/edit">Edit Profile</a></li>
+			<li><a href="/profile">{{ user.user_name }}</a></li>
+			<li><a href="/profile/{{ user.user_name }}/edit">Edit Profile</a></li>
 			<li><a href="/logout/">Logout</a></li>
 		</ul>
 		<ul id="userinfo-ratio-stats">

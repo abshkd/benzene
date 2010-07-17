@@ -1,25 +1,13 @@
-# core views
 import random
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from forms import RegForm, ConfirmForm
+from forms import RegForm, ConfirmForm, EditProfileForm
 from models import CustomUser, UnconfirmedUser
 import utils
-
-'''def confirm(request, code):
-	code = str(code)
-	unconfirmed = UnconfirmedUser.objects.get(identifier=code)
-	if unconfirmed:
-		new_user = CustomUser.objects.create_user(unconfirmed.username, unconfirmed.email, unconfirmed.password)
-		unconfirmed.delete()
-		utils.login_user(request, new_user)
-		return HttpResponseRedirect('/profile/')
-	else:
-		return HttpResponse("Sorry, you confirmation code doesn't exist")'''
 		
 def confirm(request):
 	form = ConfirmForm()
@@ -35,18 +23,31 @@ def confirm(request):
 	#registration template used on purpose, it is very generic, maybe 'confirm.html' template later if pages need to differ
 
 @login_required		
-def edit_profile(request):
-	return HttpResponse("Make form, complete later")
+def edit_profile(request, user_name):
+	if request.method == 'GET':
+		if user_name != request.user.user_name:
+			return HttpResponseForbidden()
+		user_data = {}
+		for field in EditProfileForm():
+			if 'password' not in field.name:
+				user_data[field.name] = getattr(request.user, field.name)
+		form = EditProfileForm(initial=user_data)
+		return render_to_response('registration.html', {'form': form}, context_instance = RequestContext(request))
+	else:
+		form = EditProfileForm(request.POST, request.user)
+		if form.is_valid():
+			cd = form.cleaned_data
+			for item in cd:
+				if getattr(request.user, item) != cd[item]:
+					setattr(request.user, item, cd[item])
+			request.user.save()
+		return HttpResponseRedirect('/profile/' + request.user.user_name)
 		
 def home(request):
 	if request.user.is_authenticated():
 		return HttpResponseRedirect('/profile/')
 	return render_to_response('visitor_home.html', {})
-	
-def logout_view(request):
-	logout(request)
-	return HttpResponseRedirect('/')
-	
+		
 @login_required
 def profile(request, user_name = ''):
 	if not user_name:
@@ -79,9 +80,3 @@ def success(request):
 	
 def test(request):
 	return HttpResponseRedirect("/")
-
-
-	
-
-		
-	

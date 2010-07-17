@@ -1,4 +1,8 @@
+from datetime import datetime
 import random
+from django.db import models
+from django.utils import simplejson as json
+from django.conf import settings
 from django.contrib.auth.models import get_hexdigest
 
 def rand_str(lower=15,upper=25,fixed=0):
@@ -13,6 +17,7 @@ def rand_str(lower=15,upper=25,fixed=0):
 	return string
 	
 def create_password(raw_pass):
+	'''Changes a raw password into a hashed password'''
 	algo = 'sha1'
 	salt = get_hexdigest(algo, str(random.random()), str(random.random()))[:5]
 	hsh = get_hexdigest(algo, salt, raw_pass)

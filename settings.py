@@ -97,6 +97,10 @@ if DEBUG:
 	EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
 	EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+	
+CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+QUEUE_BACKEND = 'memcached'
+QUEUE_MEMCACHE_CONNECTION= 'localhost:11211'
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/profile/'
