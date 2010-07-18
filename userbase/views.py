@@ -21,19 +21,12 @@ def confirm(request):
 			return HttpResponseRedirect('/profile/')
 	return render_to_response('registration.html', {'form' : form}, context_instance = RequestContext(request))
 	#registration template used on purpose, it is very generic, maybe 'confirm.html' template later if pages need to differ
-
+		
 @login_required		
 def edit_profile(request, user_name):
-	if request.method == 'GET':
-		if user_name != request.user.user_name:
-			return HttpResponseForbidden()
-		user_data = {}
-		for field in EditProfileForm():
-			if 'password' not in field.name:
-				user_data[field.name] = getattr(request.user, field.name)
-		form = EditProfileForm(initial=user_data)
-		return render_to_response('registration.html', {'form': form}, context_instance = RequestContext(request))
-	else:
+	if user_name != request.user.user_name:
+		return HttpResponseForbidden()
+	if request.method == 'POST':
 		form = EditProfileForm(request.POST, request.user)
 		if form.is_valid():
 			cd = form.cleaned_data
@@ -41,7 +34,15 @@ def edit_profile(request, user_name):
 				if getattr(request.user, item) != cd[item]:
 					setattr(request.user, item, cd[item])
 			request.user.save()
-		return HttpResponseRedirect('/profile/' + request.user.user_name)
+			return HttpResponseRedirect('/profile/' + request.user.user_name)
+		else:
+			return render_to_response('registration.html', {'form': form}, context_instance = RequestContext(request))
+	user_data = {}
+	for field in EditProfileForm():
+		if 'password' not in field.name:
+			user_data[field.name] = getattr(request.user, field.name)
+	form = EditProfileForm(initial=user_data)
+	return render_to_response('registration.html', {'form': form}, context_instance = RequestContext(request))
 		
 def home(request):
 	if request.user.is_authenticated():

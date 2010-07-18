@@ -1,5 +1,6 @@
 import re
 from django import forms
+from django.contrib.auth.models import check_password
 from models import  CustomUser, UnconfirmedUser
 from utils import create_password
 
@@ -48,6 +49,7 @@ class ConfirmForm(forms.Form):
 class EditProfileForm(forms.Form):
 	'''For every field (not including either of the password fields),
 	there must be a field in CustomUser with the same name'''
+	#if field isn't required (not counting passwords), it must have a default value
 	
 	def __init__(self, *args, **kwargs): #must either pass 2 args or none
 		if args:
@@ -56,10 +58,10 @@ class EditProfileForm(forms.Form):
 		else:
 			super(EditProfileForm, self).__init__(**kwargs)
 	
-	stylesheet = forms.URLField(required=False)
-	avatar = forms.URLField(required=False)	
+	stylesheet = forms.URLField()
+	avatar = forms.URLField()	
 	about_text = forms.CharField(widget = forms.Textarea, required=False)
-	email = forms.EmailField(required=False)
+	email = forms.EmailField()
 	old_password = forms.CharField(max_length=30, widget = forms.PasswordInput, required=False)
 	new_password = forms.CharField(max_length=30, widget = forms.PasswordInput, required=False)
 	new_password_again = forms.CharField(max_length=30, widget = forms.PasswordInput, required=False)
@@ -70,9 +72,9 @@ class EditProfileForm(forms.Form):
 		if cd.get('new_password') != cd.get('new_password_again'):
 			raise forms.ValidationError('New passwords did not match')		
 		if cd.get('new_password') or (cd.get('email') != self.user.email):
-			if create_password(cd.get('old_password')) == self.user.password:
+			if check_password(cd.get('old_password'), self.user.password):
 				if cd.get('new_password'):
-					result['password'] = cd.get('new_password')
+					result['password'] = create_password(cd.get('new_password'))
 				else:
 					result['email'] = cd.get('email')
 			else:
