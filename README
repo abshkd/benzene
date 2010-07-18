@@ -42,6 +42,11 @@ MySQL:
 	CREATE DATABASE benzene;
 	GRANT ALL ON benzene.* to 'benzene_user'@'localhost';
 
-	# Go to your benzene root directory
-
 	python manage.py syncdb
+
+Site Setup:
+
+	# Go to your benzene root directory
+	
+	python manage.py syncdb
+	python manage.py new_benzene

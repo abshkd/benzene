@@ -58,7 +58,7 @@ class EditProfileForm(forms.Form):
 		else:
 			super(EditProfileForm, self).__init__(**kwargs)
 	
-	stylesheet = forms.URLField()
+	stylesheet = forms.URLField(required=False)
 	avatar = forms.URLField()	
 	about_text = forms.CharField(widget = forms.Textarea, required=False)
 	email = forms.EmailField()
