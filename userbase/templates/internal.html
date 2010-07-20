@@ -5,19 +5,20 @@
 	</div>
 	<div id="navigation">
 		<ul class="nav">
-			<li><a href="{% url userbase.views.torrents_view %}">Torrents</a></li>
+		<a href="{% url home %}">Home</a>
 		</ul>
 	</div>
 	<div id="userinfo">
 		<img id="userinfo-avatar" src="{{user.avatar}}" alt="user avatar" />		
 		<ul id="userinfo-username">
-			<li><a href="/profile">{{ user.user_name }}</a></li>
-			<li><a href="/profile/{{ user.user_name }}/edit">Edit Profile</a></li>
-			<li><a href="/logout/">Logout</a></li>
+			<li><a href="{% url profile username=user.user_name %}">Profile</a></li>
+			<li><a href="{% url edit_profile username=user.user_name %}">Edit Profile</a></li>
+			<li><a href="{% url logout %}">Logout</a></li>
 		</ul>
 		<ul id="userinfo-ratio-stats">
 			<li>User Info [ratio stats] here?</li>
 		</ul>
 	</div>
 {% endblock header %}
+
 
