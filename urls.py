@@ -9,7 +9,7 @@ import userbase
 urlpatterns = patterns('',
 	url(r'^$', 'userbase.views.home', name='home'),
 	url(r'^register/$', 'userbase.views.reg', name='register'),
-	url(r'^confirm/$', 'userbase.views.confirm', name='confirm'),
+	url(r'^confirm/(?P<code>\w{15,25})/$', 'userbase.views.confirm', name='confirm'),
 	url(r'^success/$', 'userbase.views.success', name='success'),
 	url(r'^login/$', 'django.contrib.auth.views.login', {'template_name' : 'login.html'}, name='login'),
 	url(r'^logout/$', 'django.contrib.auth.views.logout_then_login', name='logout'),

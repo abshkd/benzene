@@ -10,18 +10,16 @@ from forms import RegForm, ConfirmForm, EditProfileForm
 from models import CustomUser, UnconfirmedUser
 import utils
 		
-def confirm(request):
-	form = ConfirmForm()
-	if request.method == 'POST':
-		form = ConfirmForm(request.POST)
+def confirm(request, code=''):
+	if request.method == 'GET' and code:
+		form = ConfirmForm({'confirmation_key':code})
 		if form.is_valid():
 			unconfirmed = form.cleaned_data['unconfirmed']
 			new_user = CustomUser.objects.create_user(unconfirmed.username, unconfirmed.email, unconfirmed.password)
 			unconfirmed.delete()
 			utils.login_user(request, new_user)
-			return HttpResponseRedirect('/profile/')
-	return render_to_response('registration.html', {'form' : form}, context_instance = RequestContext(request))
-	#registration template used on purpose, it is very generic, maybe 'confirm.html' template later if pages need to differ
+			return HttpResponseRedirect(reverse(profile, kwargs={'username':request.user.user_name}))
+	return HttpResponse('The confirmation code was not valid')
 		
 @login_required		
 def edit_profile(request, username):
