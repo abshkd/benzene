@@ -85,6 +85,7 @@ INSTALLED_APPS = (
 	'benzene.userbase',
 	'haystack',
 	'queued_search',
+	'benzene.private_messages'
 )
 
 AUTHENTICATION_BACKENDS = (
