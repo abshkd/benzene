@@ -104,7 +104,7 @@ QUEUE_BACKEND = 'memcached'
 QUEUE_MEMCACHE_CONNECTION= 'localhost:11211'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/profile/'
+LOGIN_REDIRECT_URL = '/user/'
 
 HAYSTACK_SITECONF = 'benzene.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'solr'
