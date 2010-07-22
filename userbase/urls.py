@@ -4,5 +4,6 @@ from userbase import views
 
 urlpatterns = patterns('',
 	url(r'^(?P<username>.*)/$', views.profile, name='profile'),
-	url(r'^(?P<username>.*)/edit/$', views.edit_profile, name='edit_profile')
+	url(r'^(?P<username>.*)/edit/$', views.edit_profile, name='edit_profile'),
+	url(r'^$', views.profile, name='default_profile')
 )

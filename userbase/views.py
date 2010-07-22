@@ -52,6 +52,8 @@ def home(request):
 		
 @login_required
 def profile(request, username = ''):
+	if not username:
+		return HttpResponseRedirect(reverse(profile, kwargs={'username':request.user.user_name}))
 	return render_to_response('internal.html', {'user': CustomUser.objects.get(user_name=username)})
 	
 def reg(request):
