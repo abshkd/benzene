@@ -1,0 +1,7 @@
+#header {
+	float: top;
+}
+
+#header ul {
+	display: inline;
+}

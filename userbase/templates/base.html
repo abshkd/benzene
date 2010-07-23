@@ -3,13 +3,19 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-<title>{% block html-title %}Benzene{% endblock %}</title>{% block head-jscript %}{% endblock %}
+	<title>{% block html-title %}Benzene{% endblock %}</title>
+	<link href="base.css" rel="stylesheet" type="text/css" />
+	{% block head-jscript %}{% endblock %}
 </head>
 <body>
-<div id="body">
-<div id="header">{% block header %}{% endblock %}</div>
-{% block body %}{% endblock %}
-<div id="footer">{% block footer %}{% endblock %}</div>
-</div>
+	<div id="body">
+		<div id="header">
+			{% block header %}{% endblock %}
+		</div>
+		{% block body %}{% endblock %}
+		<div id="footer">
+			{% block footer %}{% endblock %}
+		</div>
+	</div>
 </body>
 </html>

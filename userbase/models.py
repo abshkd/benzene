@@ -41,10 +41,3 @@ class UnconfirmedUser(models.Model):
 	password = models.CharField(max_length=128)
 	email = models.EmailField(unique=True, db_index=True)
 	identifier = models.CharField(max_length=26, unique=True)
-	
-
-
-
-			
-
-	

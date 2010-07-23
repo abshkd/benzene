@@ -35,13 +35,13 @@ def edit_profile(request, username):
 			request.user.save()
 			return HttpResponseRedirect(reverse(profile, kwargs={'username':request.user.user_name}))
 		else:
-			return render_to_response('registration.html', {'form': form}, context_instance = RequestContext(request))
+			return render_to_response('edit_profile.html', {'form': form}, context_instance = RequestContext(request))
 	user_data = {}
 	for field in EditProfileForm():
 		if 'password' not in field.name:
 			user_data[field.name] = getattr(request.user, field.name)
 	form = EditProfileForm(initial=user_data)
-	return render_to_response('registration.html', {'form': form}, context_instance = RequestContext(request))
+	return render_to_response('edit_profile.html', {'form': form}, context_instance = RequestContext(request))
 		
 def home(request):
 	if request.user.is_authenticated():
@@ -52,7 +52,7 @@ def home(request):
 def profile(request, username = ''):
 	if not username:
 		return HttpResponseRedirect(reverse(profile, kwargs={'username':request.user.user_name}))
-	return render_to_response('internal.html', {'user': CustomUser.objects.get(user_name=username)})
+	return render_to_response('profile.html', {'profile': CustomUser.objects.get(user_name=username)}, context_instance = RequestContext(request))
 	
 def reg(request):
 	form = RegForm()
