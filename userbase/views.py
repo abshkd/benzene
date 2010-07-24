@@ -4,8 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
-from django.shortcuts import render_to_response
-from django.template import RequestContext
+from base_utils import render_to_response
 from forms import RegForm, ConfirmForm, EditProfileForm
 from models import CustomUser, UnconfirmedUser
 import utils
@@ -35,24 +34,24 @@ def edit_profile(request, username):
 			request.user.save()
 			return HttpResponseRedirect(reverse(profile, kwargs={'username':request.user.user_name}))
 		else:
-			return render_to_response('edit_profile.html', {'form': form}, context_instance = RequestContext(request))
+			return render_to_response(request, 'edit_profile.html', {'form': form})
 	user_data = {}
 	for field in EditProfileForm():
 		if 'password' not in field.name:
 			user_data[field.name] = getattr(request.user, field.name)
 	form = EditProfileForm(initial=user_data)
-	return render_to_response('edit_profile.html', {'form': form}, context_instance = RequestContext(request))
+	return render_to_response(request, 'edit_profile.html', {'form': form})
 		
 def home(request):
 	if request.user.is_authenticated():
 		return HttpResponseRedirect(reverse(profile, kwargs={'username':request.user.user_name}))
-	return render_to_response('visitor_home.html', {})
+	return render_to_response(request, 'visitor_home.html', {})
 		
 @login_required
 def profile(request, username = ''):
 	if not username:
 		return HttpResponseRedirect(reverse(profile, kwargs={'username':request.user.user_name}))
-	return render_to_response('profile.html', {'profile': CustomUser.objects.get(user_name=username)}, context_instance = RequestContext(request))
+	return render_to_response(request, 'profile.html', {'profile': CustomUser.objects.get(user_name=username)})
 	
 def reg(request):
 	form = RegForm()
@@ -66,7 +65,7 @@ def reg(request):
 			send_mail('User Confirmation', code, 'noreply@example.com', [cd['email']])
 			request.session['email'] = cd['email']
 			return HttpResponseRedirect('/success/')
-	return render_to_response('registration.html', {'form' : form}, context_instance = RequestContext(request))
+	return render_to_response(request, 'registration.html', {'form' : form})
 	
 def success(request):
 	try:

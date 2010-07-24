@@ -1,0 +1,17 @@
+{% extends 'internal.html' %}
+{% block body %}
+<table> 
+   <tr class="colhead"> 
+   		<td>Subject</td> 
+   		<td>Sender</td> 
+   	    <td>Date</td> 
+   </tr> 
+   {% for conv  in conversations %} 
+   	<tr>
+   		<td><a href="{% url view_conversation key=conv.key  %}">{{ conv.subject }}</a></td>
+   		<td><a href="{% url profile username=conv.other_user.user_name %}">{{ conv.other_user.user_name }}</a></td>
+   		<td>{{ conv.time|timesince }}</td>
+   	</tr>	
+	{% endfor %} 	 
+ </table>
+{% endblock %}

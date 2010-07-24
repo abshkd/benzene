@@ -3,7 +3,7 @@ from userbase.models import CustomUser
 	
 class Message(models.Model):
 	content = models.TextField()
-	subject = models.CharField(max_length = 120)
+	subject = models.CharField(max_length = 80)
 	sender = models.ForeignKey(CustomUser, related_name='outbox')
 	recip = models.ForeignKey(CustomUser, related_name = 'inbox')
 	read = models.BooleanField(default=False)
