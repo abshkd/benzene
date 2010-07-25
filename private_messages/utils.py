@@ -20,7 +20,7 @@ class Conversation(object):
 	def __getattr__(self, name):
 		if name == 'time':
 			if len(self.messages):
-				return min(msg.time for msg in self.messages)
+				return max(msg.time for msg in self.messages)
 			else:
 				raise ValueError('Conversation must have messages to have a time')
 		else:

@@ -1,6 +1,6 @@
 {% extends 'internal.html' %}
 {% block body %}
-<h1>Send Message to <a href="{% url profile username=other_user.user_name">{{ other_user.user_name }}</a></h1>
+<p>Send Message to <a href="{% url profile username=other_user.user_name">{{ other_user.user_name }}</a></p>
 {% if form.errors %}
 <p>Please correct the error{{ forms.errors|pluralize }} below.</p>
 {% endif %}

@@ -1,0 +1,26 @@
+{% extends 'internal.html' %}
+{% block body %}
+{% if error %}
+	{{ error }}
+{% endif %}
+{% if conversation %}
+	{{ conversation.subject }}
+	<form action="{% url send_message %}" method="post">{% csrf_token %}
+	Subject: <input id="id_subject" type="hidden" name="subject" value="{{ conversation.subject }}" maxlength="80" />
+{% else %}
+	Send a message to <a href="{% url profile username=other_user.user_name %}">{{ other_user.user_name }}</a>
+	<form action="{% url send_message %}" method="post">{% csrf_token %}
+	Subject: {{ form.subject }}
+{% endif %}
+{{ form.content }}
+<input type="hidden" name="recip" value="{{ other_user.id }}" id="id_recip" />
+<input type="submit" value="Send Message">
+</form>
+{% if conversation %}
+	{% for message in conversation.messages %}
+		<a href="{% url profile username=message.sender.user_name %}">{{ message.sender.user_name }}</a>
+		{{ message.time|timesince }} ago
+		{{ message.content }}
+	{% endfor %}
+{% endif %}
+{% endblock %}

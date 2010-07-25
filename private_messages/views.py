@@ -15,8 +15,6 @@ def inbox(request, outbox=False):
 	else:
 		box_subjects = set(msg.subject for msg in request.user.inbox.all())
 	result = [conv for conv in get_conversations(request.user) if conv.subject in box_subjects]
-	for conv in result:
-		print conv.__dict__.keys()
 	return render_to_response(request, 'inbox.html', {'conversations': result})
 
 @login_required	
@@ -24,22 +22,26 @@ def view_conversation(request, key = ''):
 	if key:
 		for conv in get_conversations(request.user):
 			if key == conv.key:
-				return render_to_response('some_other_template', {'conversation': conv})
+				return render_to_response(request, 'conversation.html', {'conversation': conv, 'form': MessageForm(), 'other_user': conv.other_user})
 	return HttpResponseNotFound()
-	
-@login_required
-def send_message(request, recip=''):
+
+@login_required	
+def new_conversation(request, recip=''):
 	try:
-		recip_instance = CustomUser.objects.get(user_name=recip)
+		recip = CustomUser.objects.get(user_name=recip)
 	except:
 		return HttpResponseNotFound()
-	form = MessageForm()
-	if request.method == 'POST':
-		form = MessageForm(request.POST)
-		if form.is_valid():
-			cd = form.cleaned_data
-			m = Message(sender=request.user, recip=recip_instance, subject=cd['subject'], content=cd['content'])
-			m.save()
-			return HttpResponseRedirect(reverse('inbox'))
-	return render_to_response(request, 'send_message.html', {'form': form, 'other_user': recip_instance})
-		
+	return render_to_response(request, 'conversation.html', {'form': MessageForm(), 'other_user': recip})
+	
+@login_required
+def send_message(request):
+	if request.method != 'POST':
+		return HttpResponseNotFound()
+	form = MessageForm(request.POST)
+	other_user = form['recip']
+	if form.is_valid():
+		cd = form.cleaned_data
+		m = Message(sender=request.user, recip=cd['recip'], subject=cd['subject'], content=cd['content'])
+		m.save()
+		return HttpResponseRedirect(reverse('inbox'))
+	return HttpResponse('There was an error with your message')
