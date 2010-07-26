@@ -4,16 +4,12 @@
 	{{ error }}
 {% endif %}
 {% if conversation %}
-	{{ conversation.subject }}
-	<form action="{% url send_message %}" method="post">{% csrf_token %}
-	Subject: <input id="id_subject" type="hidden" name="subject" value="{{ conversation.subject }}" maxlength="80" />
+	{{ conversation.subject }}	
 {% else %}
-	Send a message to <a href="{% url profile username=other_user.user_name %}">{{ other_user.user_name }}</a>
-	<form action="{% url send_message %}" method="post">{% csrf_token %}
-	Subject: {{ form.subject }}
+	Send a message to {{ other_user.user_name }}
 {% endif %}
-{{ form.content }}
-<input type="hidden" name="recip" value="{{ other_user.id }}" id="id_recip" />
+<form action="{% url send_message %}" method="post">{% csrf_token %}
+{{ form.as_ul }}
 <input type="submit" value="Send Message">
 </form>
 {% if conversation %}

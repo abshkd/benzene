@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
+from django.forms import HiddenInput
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from userbase.models import CustomUser
 from forms import MessageForm
@@ -22,7 +23,9 @@ def view_conversation(request, key = ''):
 	if key:
 		for conv in get_conversations(request.user):
 			if key == conv.key:
-				return render_to_response(request, 'conversation.html', {'conversation': conv, 'form': MessageForm(), 'other_user': conv.other_user})
+				form = MessageForm(initial={'subject': conv.subject, 'recip': conv.other_user})
+				form.fields['subject'].widget = HiddenInput()
+				return render_to_response(request, 'conversation.html', {'conversation': conv, 'form': form, 'other_user': conv.other_user})
 	return HttpResponseNotFound()
 
 @login_required	
@@ -31,7 +34,7 @@ def new_conversation(request, recip=''):
 		recip = CustomUser.objects.get(user_name=recip)
 	except:
 		return HttpResponseNotFound()
-	return render_to_response(request, 'conversation.html', {'form': MessageForm(), 'other_user': recip})
+	return render_to_response(request, 'conversation.html', {'form': MessageForm(initial={'recip': recip.id}), 'other_user': recip})
 	
 @login_required
 def send_message(request):
