@@ -14,7 +14,7 @@ class Conversation(object):
 	
 	def __eq__(self, other):
 		if hasattr(other, 'subject') and hasattr(other, 'other_user'):
-			return self.subject == other.subject and self.other_user == other.other_user
+			return self.key == other.key
 		return False
 	
 	def __getattr__(self, name):
@@ -23,8 +23,19 @@ class Conversation(object):
 				return max(msg.time for msg in self.messages)
 			else:
 				raise ValueError('Conversation must have messages to have a time')
+		elif name == 'read':
+			return self.messages.latest().read
 		else:
 			raise AttributeError(name)
+		
+	def __setattr__(self, name, value):
+		if name == 'read' and value==True:
+			unreads = self.messages.filter(read=False)
+			for msg in unreads:
+				msg.read = True
+			unreads.save()
+		else:
+			super(Conversation, self).__setattr__(name, value)
 			
 def update_conversations(username, conversations, messages):
 	conversations = conversations[:]
