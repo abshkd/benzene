@@ -9,4 +9,3 @@ urlpatterns = patterns('',
 	url(r'^new/(?P<recip>.*)/$', views.new_conversation, name='new_message'),
 	url(r'^send/$', views.send_message, name='send_message'),
 )
-	

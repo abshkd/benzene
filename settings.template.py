@@ -13,7 +13,7 @@ INTERNAL_IPS = ('127.0.0.1',)
 
 SITE_NAME = 'Benzene Reference' #the name of your site. it can includes spaces. not the URL
 
-SITE_ADDRESS = '192.168.1.100:8000' #the URL of your site, without any protocol at the beginning
+SITE_ADDRESS = '127.0.0.1:8000' #the URL of your site, without any protocol at the beginning
 
 MANAGERS = ADMINS
 

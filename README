@@ -19,6 +19,8 @@ DEPENDENCIES:
 * python-memcached 1.45 =<	http://www.tummy.com/Community/software/python-memcached/
 * queues .5 =<			http://code.google.com/p/queues/
 * queued_search 1.0 =<		http://github.com/toastdriven/queued_search
+* piston 0.2.2 =<		http://bitbucket.org/jespern/django-piston/wiki/Home
+* django-debug-toolbar		http://github.com/robhudson/django-debug-toolbar
 
 SETUP:
 
