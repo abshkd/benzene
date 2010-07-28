@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User, UserManager
+from django.db import models
 from manager import CustomUserManager
 
 RANKS = (
@@ -18,9 +18,14 @@ class CustomUser(User):
 	donor = models.BooleanField(default=False)
 	avatar = models.URLField(default='http://irregulartimes.com/smileyface125thumb.gif')
 	invites = models.SmallIntegerField(default=0)
-	about_text = models.TextField()
-	stylesheet = models.URLField()
+	about_text = models.TextField(blank=True)
+	stylesheet = models.URLField(blank=True)
 	objects = CustomUserManager()
+	
+	def save(self):
+		if self.username != self.user_name:
+			self.username = self.user_name
+		super(CustomUser, self).save()
 	
 	def get_permissions(self):
 		permissions = {}

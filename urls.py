@@ -1,8 +1,8 @@
 from django.conf.urls.defaults import *
 
 # Uncomment the next two lines to enable the admin:
-#from django.contrib import admin
-#admin.autodiscover()
+from django.contrib import admin
+admin.autodiscover()
 
 urlpatterns = patterns('',
 	url(r'^$', 'userbase.views.home', name='home'),
@@ -12,7 +12,8 @@ urlpatterns = patterns('',
 	url(r'^login/$', 'django.contrib.auth.views.login', {'template_name' : 'login.html'}, name='login'),
 	url(r'^logout/$', 'django.contrib.auth.views.logout_then_login', name='logout'),
 	(r'^user/', include('userbase.urls')),
-	(r'^messages/', include('private_messages.urls'))
+	(r'^messages/', include('private_messages.urls')),
+	(r'^admin/', include(admin.site.urls)),
 	
 	# Example:
 	# (r'^benzene/', include('benzene.foo.urls')),

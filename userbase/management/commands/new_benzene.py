@@ -17,6 +17,8 @@ class Command(BaseCommand):
 		if form.is_valid() and not len(CustomUser.objects.all()):
 			sysop = CustomUser.objects.create_user(reg['username'], reg['email'], reg['password'], already_hashed = False)
 			sysop.rank = 'SYS'
+			sysop.is_superuser = True
+			sysop.is_staff = True
 			sysop.save()
 		else:
 			 self.stdout.write('There were errors in your data. Please try again')
