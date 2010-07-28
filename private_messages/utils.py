@@ -14,7 +14,7 @@ class Conversation(object):
 		self.key = md5_constructor(subject + other_user.user_name).hexdigest()
 	
 	def __eq__(self, other):
-		if hasattr(other, 'key')
+		if hasattr(other, 'key'):
 			return self.key == other.key
 		return False
 	
