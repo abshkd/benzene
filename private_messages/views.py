@@ -23,9 +23,8 @@ def view_conversation(request, key = ''):
 	if key:
 		for conv in get_conversations(request.user):
 			if key == conv.key:
-				form = MessageForm(initial={'subject': conv.subject, 'recip': conv.other_user})
+				form = MessageForm(initial={'subject': conv.subject, 'recip': conv.other_user.id})
 				form.fields['subject'].widget = HiddenInput()
-				conv.read = True
 				return render_to_response(request, 'conversation.html', {'conversation': conv, 'form': form, 'other_user': conv.other_user})
 	return HttpResponseNotFound()
 

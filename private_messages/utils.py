@@ -4,6 +4,7 @@ except:
 	import pickle
 from django.core.cache import cache
 from django.utils.hashcompat import md5_constructor
+from models import Message
 
 class Conversation(object):
 	def __init__(self, subject, other_user):
@@ -13,7 +14,7 @@ class Conversation(object):
 		self.key = md5_constructor(subject + other_user.user_name).hexdigest()
 	
 	def __eq__(self, other):
-		if hasattr(other, 'subject') and hasattr(other, 'other_user'):
+		if hasattr(other, 'key')
 			return self.key == other.key
 		return False
 	
@@ -23,19 +24,8 @@ class Conversation(object):
 				return max(msg.time for msg in self.messages)
 			else:
 				raise ValueError('Conversation must have messages to have a time')
-		elif name == 'read':
-			return self.messages.latest().read
 		else:
 			raise AttributeError(name)
-		
-	def __setattr__(self, name, value):
-		if name == 'read' and value==True:
-			unreads = self.messages.filter(read=False)
-			for msg in unreads:
-				msg.read = True
-			unreads.save()
-		else:
-			super(Conversation, self).__setattr__(name, value)
 			
 def update_conversations(username, conversations, messages):
 	conversations = conversations[:]
@@ -63,7 +53,9 @@ def get_conversations(user):
 	convs_pickle = cache.get(user.user_name + '_convs')
 	if convs_pickle and pickle.loads(convs_pickle):
 		convs = pickle.loads(convs_pickle)
-		if user.inbox.latest().time > convs[0].time or user.outbox.latest().time > convs[0].time: #if update is needed
+		latest_in = user.inbox.try_latest()
+		latest_out = user.outbox.try_latest()
+		if latest_in and latest_out and (latest_in.time > convs[0].time or latest_out.time > convs[0].time): #if update is needed
 			messages = get_messages(user)	
 			updates = []
 			for msg in messages[::-1]:

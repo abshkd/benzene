@@ -1,0 +1,11 @@
+{% extends 'internal.html' %}
+{% block body %}
+{{ blog.name }}
+{% for post in blog.posts %}
+	{{ post.time }}
+	{% with post.author.user_name as author %}
+		<a href="{% url profile username=author %}">{{ author }}</a>
+	{% endwith %}
+	{{ post.content }}
+{% endfor %}
+{% endblock %}

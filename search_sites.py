@@ -1,6 +1,5 @@
 import haystack
 from haystack.indexes import RealTimeSearchIndex
-from queued_search.indexes import QueuedSearchIndex
 from settings import DEBUG
 
 def get_index():
@@ -8,7 +7,11 @@ def get_index():
 	
 	if DEBUG:
 		return RealTimeSearchIndex
-	return QueuedSearchIndex
+	try:
+		from queued_search.indexes import QueuedSearchIndex
+		return QueuedSearchIndex
+	except:
+		return RealTimeSearchIndex
 	
 haystack.autodiscover()
 

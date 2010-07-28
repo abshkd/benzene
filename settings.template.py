@@ -9,6 +9,8 @@ ADMINS = (
 	# ('Your Name', 'your_email@domain.com'),
 )
 
+INTERNAL_IPS = ('127.0.0.1',)
+
 SITE_NAME = 'Benzene Reference' #the name of your site. it can includes spaces. not the URL
 
 SITE_ADDRESS = '192.168.1.100:8000' #the URL of your site, without any protocol at the beginning
@@ -17,7 +19,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
 	'default': {
-		'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+		'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 		'NAME': 'benzene',					  # Or path to database file if using sqlite3.
 		'USER': 'benzene_user',					  # Not used with sqlite3.
 		'PASSWORD': '',				  # Not used with sqlite3.
@@ -85,7 +87,8 @@ INSTALLED_APPS = (
 	'benzene.userbase',
 	'haystack',
 	'queued_search',
-	'benzene.private_messages'
+	'benzene.private_messages',
+	'debug_toolbar',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -96,17 +99,20 @@ CUSTOM_USER_MODEL = 'userbase.CustomUser'
 
 if DEBUG:
 	EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+	CACHE_BACKEND = 'locmem://'
+	HAYSTACK_SEARCH_ENGINE = 'dummy'
+	QUEUE_BACKEND = 'dummy'
+	MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware',)
 else:
 	EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+	CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
+	QUEUE_BACKEND = 'memcached'
+	QUEUE_MEMCACHE_CONNECTION= 'localhost:11211'
+	HAYSTACK_SEARCH_ENGINE = 'solr'
+	HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
 	
-CACHE_BACKEND = 'memcached://127.0.0.1:11211/'
-QUEUE_BACKEND = 'memcached'
-QUEUE_MEMCACHE_CONNECTION= 'localhost:11211'
-
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/user/'
 
 HAYSTACK_SITECONF = 'benzene.search_sites'
-HAYSTACK_SEARCH_ENGINE = 'solr'
-HAYSTACK_SOLR_URL = 'http://127.0.0.1:8983/solr'
 HAYSTACK_LIMIT_TO_REGISTERED_MODELS = False
