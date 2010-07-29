@@ -1,13 +1,13 @@
 #userbase api urls
 from django.conf.urls.defaults import *
 from piston.resource import Resource
-#from piston.authentication import OAuthAuthentication
+from piston.authentication import OAuthAuthentication
 from handlers import CustomUserHandler
 
-#auth = {'authentication': OAuthAuthentication(realm="Benzene Realm") }
+auth = {'authentication': OAuthAuthentication(realm="Benzene Realm") }
 
-#customuser = Resource(handler=CustomUserHandler, **auth)
-customuser = Resource(CustomUserHandler)
+customuser = Resource(handler=CustomUserHandler, **auth)
+#customuser = Resource(CustomUserHandler)
 
 urlpatterns = patterns('',
 	url(r'^user/(?P<post_slug>[^/]+)/', customuser)

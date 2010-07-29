@@ -3,6 +3,7 @@ from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.forms import HiddenInput
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.views.decorators.csrf import csrf_protect
 from userbase.models import CustomUser
 from forms import MessageForm
 from models import Message
@@ -37,6 +38,7 @@ def new_conversation(request, recip=''):
 	return render_to_response(request, 'conversation.html', {'form': MessageForm(initial={'recip': recip.id}), 'other_user': recip})
 	
 @login_required
+@csrf_protect
 def send_message(request):
 	if request.method != 'POST':
 		return HttpResponseNotFound()

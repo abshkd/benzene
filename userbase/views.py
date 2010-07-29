@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+from django.views.decorators.csrf import csrf_protect
 from base_utils import render_to_response
 from forms import RegForm, ConfirmForm, EditProfileForm
 from models import CustomUser, UnconfirmedUser
@@ -20,7 +21,8 @@ def confirm(request, code=''):
 			return HttpResponseRedirect(reverse(profile, kwargs={'username':request.user.user_name}))
 	return HttpResponse('The confirmation code was not valid')
 		
-@login_required		
+@login_required
+#@csrf_protect
 def edit_profile(request, username):
 	if username != request.user.user_name:
 		return HttpResponseForbidden()
@@ -52,7 +54,8 @@ def profile(request, username = ''):
 	if not username:
 		return HttpResponseRedirect(reverse(profile, kwargs={'username':request.user.user_name}))
 	return render_to_response(request, 'profile.html', {'profile': CustomUser.objects.get(user_name=username)})
-	
+
+#@csrf_protect
 def reg(request):
 	form = RegForm()
 	if request.method == 'POST':

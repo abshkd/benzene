@@ -2,6 +2,8 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 from models import CustomUser, UnconfirmedUser
+from piston.models import Consumer, Token
+from django.contrib.sites.models import Site
 
 class CustomUserAdmin(admin.ModelAdmin):
 	date_hierarchy = 'date_joined'
@@ -12,3 +14,6 @@ class CustomUserAdmin(admin.ModelAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(UnconfirmedUser)
 admin.site.unregister(User)
+admin.site.register(Consumer)
+admin.site.register(Token)
+admin.site.unregister(Site)

@@ -16,7 +16,7 @@ class CustomUser(User):
 	user_name = models.CharField(max_length=20, unique=True)
 	rank = models.CharField(max_length=3, choices=RANKS, default='U')
 	donor = models.BooleanField(default=False)
-	avatar = models.URLField(default='http://irregulartimes.com/smileyface125thumb.gif')
+	avatar = models.URLField(default='http://irregulartimes.com/smileyface125thumb.gif')	# should change
 	invites = models.SmallIntegerField(default=0)
 	about_text = models.TextField(blank=True)
 	stylesheet = models.URLField(blank=True)
