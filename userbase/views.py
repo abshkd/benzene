@@ -22,7 +22,7 @@ def confirm(request, code=''):
 	return HttpResponse('The confirmation code was not valid')
 		
 @login_required
-#@csrf_protect
+@csrf_protect
 def edit_profile(request, username):
 	if username != request.user.user_name:
 		return HttpResponseForbidden()
@@ -55,7 +55,7 @@ def profile(request, username = ''):
 		return HttpResponseRedirect(reverse(profile, kwargs={'username':request.user.user_name}))
 	return render_to_response(request, 'profile.html', {'profile': CustomUser.objects.get(user_name=username)})
 
-#@csrf_protect
+@csrf_protect
 def reg(request):
 	form = RegForm()
 	if request.method == 'POST':

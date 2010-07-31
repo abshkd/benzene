@@ -13,3 +13,8 @@ class Message(models.Model):
 	class Meta:
 		get_latest_by = 'time'
 		ordering = ['-time']
+
+	def get_thread(self):
+		return Message.objects.filter(models.Q(subject__exact=self.subject), 
+				(models.Q(sender__exact=self.sender) & models.Q(recip__exact=self.recip)) | 
+				(models.Q(sender__exact=self.recip) & models.Q(recip__exact=self.sender)))

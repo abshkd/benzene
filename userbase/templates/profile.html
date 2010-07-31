@@ -1,6 +1,12 @@
 {% extends 'internal.html' %}
 {% block html-title %}{{ profile.user_name }}'s profile{% endblock html-title %}
 {% block body %}
+{% if profile != user %}{% comment %}Remove this block, add hook.{% endcomment %}
+<div id="profile-links">
+	<a href="{% url new_message recip=profile.username %}">Send Message</a>
+	{% comment %}<a href="{% url report username=profile.username %}">Report User</a>{% endcomment %}
+</div>
+{% endif %}
 <div id="profile-avatar">
 	<img id="profile-avatar" src="{{profile.avatar}}" alt="profile avatar" />
 </div>

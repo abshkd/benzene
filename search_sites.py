@@ -14,5 +14,3 @@ def get_index():
 		return RealTimeSearchIndex
 	
 haystack.autodiscover()
-
-

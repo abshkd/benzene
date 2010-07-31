@@ -20,6 +20,7 @@ def inbox(request, outbox=False):
 	return render_to_response(request, 'inbox.html', {'conversations': result})
 
 @login_required	
+@csrf_protect
 def view_conversation(request, key = ''):
 	if key:
 		for conv in get_conversations(request.user):
@@ -29,7 +30,8 @@ def view_conversation(request, key = ''):
 				return render_to_response(request, 'conversation.html', {'conversation': conv, 'form': form, 'other_user': conv.other_user})
 	return HttpResponseNotFound()
 
-@login_required	
+@login_required
+@csrf_protect
 def new_conversation(request, recip=''):
 	try:
 		recip = CustomUser.objects.get(user_name=recip)

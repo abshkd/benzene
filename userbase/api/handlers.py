@@ -6,6 +6,5 @@ class CustomUserHandler(BaseHandler):
 	model = CustomUser
 	fields = ('id', 'username', 'is_active', 'last_login', 'date_joined', 'rank', 'donor', 'avatar', 'about_text')
 
-	def read(self, request, post_slug):
-		print type(request.user)
-		return CustomUser.objects.get(username=post_slug)
+	def read(self, request, username):
+		return CustomUser.objects.get(username=username)

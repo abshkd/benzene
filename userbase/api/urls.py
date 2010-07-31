@@ -5,12 +5,10 @@ from piston.authentication import OAuthAuthentication
 from handlers import CustomUserHandler
 
 auth = {'authentication': OAuthAuthentication(realm="Benzene Realm") }
-
 customuser = Resource(handler=CustomUserHandler, **auth)
-#customuser = Resource(CustomUserHandler)
 
 urlpatterns = patterns('',
-	url(r'^user/(?P<post_slug>[^/]+)/', customuser)
+	url(r'^user/(?P<username>[^/]+)/', customuser)
 )
 
 urlpatterns += patterns('piston.authentication',
