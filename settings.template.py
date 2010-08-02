@@ -87,11 +87,11 @@ INSTALLED_APPS = (
 	'django.contrib.messages',
 	'django.contrib.sites',
 	'benzene.userbase',
-	'haystack',
-	'queued_search',
 	'benzene.private_messages',
 	'debug_toolbar',
+	'haystack',
 	'piston',
+	'queued_search',
 )
 
 AUTHENTICATION_BACKENDS = (
