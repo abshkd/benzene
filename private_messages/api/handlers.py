@@ -32,7 +32,7 @@ class MessageHandler(BaseHandler):
 		if 'recip' in d and 'subject' in d and 'content' in d:
 			try:
 				m = Message(sender=CustomUser.objects.get(id=request.user.id),
-					recip=CustomUser.objects.get(username__exact=d['recip']),
+					recip=CustomUser.objects.get(username=d['recip']),
 					subject=d['subject'], content=d['content'])
 				m.save()
 				return rc.CREATED
