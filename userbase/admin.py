@@ -13,7 +13,8 @@ class CustomUserAdmin(admin.ModelAdmin):
 	
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(UnconfirmedUser)
-admin.site.unregister(User)
 admin.site.register(Consumer)
 admin.site.register(Token)
+
+admin.site.unregister(User)
 admin.site.unregister(Site)
