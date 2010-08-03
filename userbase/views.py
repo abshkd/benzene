@@ -5,11 +5,13 @@ from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_protect
+from django.template.loader import render_to_string
 from base_utils import render_to_response
 from forms import RegForm, ConfirmForm, EditProfileForm
 from models import CustomUser, UnconfirmedUser
 import utils
-		
+import settings
+
 def confirm(request, code=''):
 	if request.method == 'GET' and code:
 		form = ConfirmForm({'confirmation_key':code})
@@ -63,9 +65,13 @@ def reg(request):
 		if form.is_valid():
 			cd = form.cleaned_data
 			code = utils.rand_str()
-			u = UnconfirmedUser(username = cd['username'], email = cd['email'], password = utils.create_password(cd['password']), identifier = code)
+			u = UnconfirmedUser(username = cd['username'], email = cd['email'],
+				password = utils.create_password(cd['password']), identifier = code)
 			u.save()
-			send_mail('User Confirmation', code, 'noreply@example.com', [cd['email']])
+			send_mail('User Confirmation for ' + settings.SITE_NAME,
+				render_to_string('confirmation_email.txt',
+					{'code': code, 'site': settings.SITE_NAME, 'root': settings.SITE_ADDRESS }),
+				'noreply@example.com', [cd['email']])
 			request.session['email'] = cd['email']
 			return HttpResponseRedirect('/success/')
 	return render_to_response(request, 'registration.html', {'form' : form})
