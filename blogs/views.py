@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
-from userbase.models import CustomUser
+from django.contirb.auth.models import User
 from base_utils import render_to_response
 from models import Blog
 

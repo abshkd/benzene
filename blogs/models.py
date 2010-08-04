@@ -2,7 +2,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.db import models
 from django.template.defaultfilters import slugify
-from userbase.models import CustomUser
+from django.contrib.auth.models import User
 
 class Blog(models.Model):
 	name = models.CharField(max_length=50, unique=True)
@@ -20,7 +20,7 @@ class Blog(models.Model):
 class Post(models.Model):
 	title = models.CharField(max_length=100, blank=True)
 	content = models.TextField()
-	author = models.ForeignKey(CustomUser, blank=True, null=True)
+	author = models.ForeignKey(User, blank=True, null=True)
 	time = models.DateTimeField(auto_now = True)
 	owner_type = models.ForeignKey(ContentType)
 	owner_id = models.PositiveIntegerField()

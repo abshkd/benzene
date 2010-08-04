@@ -3,7 +3,7 @@
 {{ blog.name }}
 {% for post in blog.posts.all %}
 	{{ post.time }}
-	{% with post.author.user_name as author %}
+	{% with post.author.username as author %}
 		<a href="{% url profile username=author %}">{{ author }}</a>
 	{% endwith %}
 	{{ post.content }}

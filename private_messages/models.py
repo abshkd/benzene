@@ -25,5 +25,3 @@ class Message(models.Model):
 	class Meta:
 		get_latest_by = 'time'
 		ordering = ['-time']
-
-
