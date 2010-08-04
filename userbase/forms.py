@@ -2,7 +2,6 @@ import re
 from django import forms
 from django.contrib.auth.models import User, check_password
 from models import UnconfirmedUser
-#from utils import create_password
 
 class RegForm(forms.Form):
 	username = forms.CharField(max_length=20)
@@ -12,14 +11,6 @@ class RegForm(forms.Form):
 	password_again = forms.CharField(max_length=30, widget=forms.PasswordInput)
 	invitation_key = forms.CharField(max_length=26, min_length=26, required=False, widget=forms.HiddenInput)
 	
-	def clean(self):
-		cd = self.cleaned_data	
-		if cd['email'] != cd['email_again']:
-			raise forms.ValidationError("You entered 2 different emails")
-		if cd['password'] != cd['password_again']:
-			raise forms.ValidationError("You entered 2 different passwords")
-		return cd
-				
 	def clean_email_again(self):
 		email_again = self.cleaned_data['email_again']
 		if User.objects.filter(email = email_again) or UnconfirmedUser.objects.filter(email = email_again):
@@ -46,7 +37,16 @@ class RegForm(forms.Form):
 			if email != unconfirmed_user.email:
 				raise forms.ValidationError("The invitation key was not valid.")
 			return invitation_key
+		return username	
 		
+	def clean(self):
+		cd = self.cleaned_data	
+		if cd['email'] != cd['email_again']:
+			raise forms.ValidationError("You entered 2 different emails")
+		if cd['password'] != cd['password_again']:
+			raise forms.ValidationError("You entered 2 different passwords")
+		return cd
+
 class ConfirmForm(forms.Form):
 	confirmation_key = forms.CharField(max_length=26)
 	
@@ -86,7 +86,7 @@ class EditProfileForm(forms.Form):
 			super(EditProfileForm, self).__init__(**kwargs)
 	
 	stylesheet = forms.URLField(required=False)
-	avatar = forms.URLField()	
+	avatar = forms.URLField()
 	about_text = forms.CharField(widget = forms.Textarea, required=False)
 	email = forms.EmailField()
 	old_password = forms.CharField(max_length=30, widget = forms.PasswordInput, required=False)

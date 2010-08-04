@@ -4,16 +4,16 @@
 	{{ error }}
 {% endif %}
 {% if conversation %}
-	{{ conversation.subject }}	
+	{{ conversation.latest.subject }}	
 {% else %}
-	Send a message to {{ other_user.user_name }}
+	Send a message to {{ other_user.username }}
 {% endif %}
 <form action="{% url send_message %}" method="post">{% csrf_token %}
 {{ form.as_ul }}
 <input type="submit" value="Send Message">
 </form>
 {% if conversation %}
-	{% for message in conversation.messages %}
+	{% for message in conversation %}
 		<a href="{% url profile username=message.sender.user_name %}">{{ message.sender.user_name }}</a>
 		{{ message.time|timesince }} ago
 		{{ message.content }}
