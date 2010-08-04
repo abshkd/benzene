@@ -12,9 +12,9 @@ class MessageIndex(get_index()):
 	read = BooleanField(model_attr = 'read')
 	
 	def prepare_sender(self, obj):
-		return obj.sender.user_name
+		return obj.sender.username
 		
 	def prepare_recip(self, obj):
-		return obj.recip.user_name
+		return obj.recip.username
 	
 site.register(Message, MessageIndex)

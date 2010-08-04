@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.forms import HiddenInput
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.views.decorators.csrf import csrf_protect
-from userbase.models import CustomUser
+from django.contrib.auth.models import User
 from forms import MessageForm
 from models import Message
 from utils import get_conversations
@@ -34,7 +34,7 @@ def view_conversation(request, key = ''):
 @csrf_protect
 def new_conversation(request, recip=''):
 	try:
-		recip = CustomUser.objects.get(user_name=recip)
+		recip = User.objects.get(username=recip)
 	except:
 		return HttpResponseNotFound()
 	return render_to_response(request, 'conversation.html', {'form': MessageForm(initial={'recip': recip.id}), 'other_user': recip})

@@ -2,7 +2,7 @@
 from django.contrib import admin
 from models import Message
 
-class CustomMessage(admin.ModelAdmin):
+class MessageAdmin(admin.ModelAdmin):
 	list_display = ('subject', 'sender', 'recip')
 
-admin.site.register(Message, CustomMessage)
+admin.site.register(Message, MessageAdmin)

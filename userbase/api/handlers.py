@@ -1,10 +1,8 @@
 from piston.handler import BaseHandler
-from userbase.models import CustomUser
+from piston.utils import rc
+from django.contrib.auth.models import User
 
-class CustomUserHandler(BaseHandler):
+class UserHandler(BaseHandler):
 	allowed_methods = ('GET',)
-	model = CustomUser
-	fields = ('id', 'username', 'is_active', 'last_login', 'date_joined', 'rank', 'donor', 'avatar', 'about_text')
-
-	def read(self, request, username):
-		return CustomUser.objects.get(username=username)
+	model = User
+	fields = ('id', 'username', 'is_active', 'last_login', 'date_joined', ('profile', ('about', 'rank', 'avatar', 'donor')))

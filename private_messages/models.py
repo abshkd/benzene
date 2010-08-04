@@ -1,12 +1,12 @@
 from django.db import models
-from userbase.models import CustomUser
+from django.contrib.auth.models import User
 from manager import MessageManager
 	
 class Message(models.Model):
 	content = models.TextField()
 	subject = models.CharField(max_length = 80)
-	sender = models.ForeignKey(CustomUser, related_name='outbox', null=True)
-	recip = models.ForeignKey(CustomUser, related_name='inbox')
+	sender = models.ForeignKey(User, related_name='outbox', null=True)
+	recip = models.ForeignKey(User, related_name='inbox')
 	time = models.DateTimeField(auto_now = True)
 	objects = MessageManager()
 	

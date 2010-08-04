@@ -1,6 +1,6 @@
 To confirm your registration and activate your account, go to:
 
-	{{ root }}{% url userbase.views.confirm code %}
+	http://{{ root }}{% url userbase.views.confirm key %}
 
 Thank you,
 	{{ site }}

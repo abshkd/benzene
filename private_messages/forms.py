@@ -1,9 +1,7 @@
 from django import forms
-from userbase.models import CustomUser
+from django.contrib.auth.models import User
 
 class MessageForm(forms.Form):
 	subject = forms.CharField(max_length=80)
-	content = forms.CharField(widget = forms.Textarea)
-	recip = forms.ModelChoiceField(queryset=CustomUser.objects, widget=forms.HiddenInput)
-	
-	
+	content = forms.CharField(widget=forms.Textarea)
+	recip = forms.ModelChoiceField(queryset=User.objects, widget=forms.HiddenInput)

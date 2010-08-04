@@ -1,33 +1,27 @@
 {% extends 'internal.html' %}
-{% block html-title %}{{ profile.user_name }}'s profile{% endblock html-title %}
+{% block html-title %}{{ profile.username }}'s profile{% endblock html-title %}
 {% block body %}
-{% if profile != user %}{% comment %}Remove this block, add hook.{% endcomment %}
-<div id="profile-links">
-	<a href="{% url new_message recip=profile.username %}">Send Message</a>
-	{% comment %}<a href="{% url report username=profile.username %}">Report User</a>{% endcomment %}
-</div>
-{% endif %}
 <div id="profile-avatar">
-	<img id="profile-avatar" src="{{profile.avatar}}" alt="profile avatar" />
+	<img id="profile-avatar" src="{{profile.profile.avatar}}" alt="profile avatar" />
 </div>
 <div id="profile-sidebar">
 	<ul>
 		{% if not profile.is_active %}
 		<li>disabled</li>
 		{% endif %}
-		{% if profile.donor %}
+		{% if profile.profile.donor %}
 		<li>donor</li>
 		{% endif %}
 		{% if profile.is_staff or profile == user %}
 		<li>email: {{ profile.email }}</li>
-		<li>invites: {{ profile.invites }}</li>
+		<li>invites: {{ profile.profile.invites }}</li>
 		{% endif %}
 		<li>joined: {{ profile.date_joined }}</li>
 		<li>last seen: {{ profile.last_login }}</li>
-		<li>rank: {{ profile.get_rank_display }}</li>
+		<li>rank: {{ profile.profile.get_rank_display }}</li>
 	</ul>
 </div>
 <div id="profile-text">
-	{{ profile.about_text }}
+	{{ profile.about }}
 </div>
 {% endblock body %}

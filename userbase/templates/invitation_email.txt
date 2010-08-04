@@ -1,0 +1,8 @@
+The user {{ inviter }} has invited you to join {{ site }} at the address {{ email }}. If you do not know this person, ignore this email.
+
+To confirm your invite, go to:
+
+	http://{{ root }}{% url userbase.views.register key %}
+
+Thank you,
+	{{ site }}

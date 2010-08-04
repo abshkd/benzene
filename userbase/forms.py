@@ -1,15 +1,16 @@
 import re
 from django import forms
-from django.contrib.auth.models import check_password
-from models import  CustomUser, UnconfirmedUser
-from utils import create_password
+from django.contrib.auth.models import User, check_password
+from models import UnconfirmedUser
+#from utils import create_password
 
 class RegForm(forms.Form):
 	username = forms.CharField(max_length=20)
 	email = forms.EmailField()
 	email_again = forms.EmailField()
-	password = forms.CharField(max_length=30, widget = forms.PasswordInput)
-	password_again = forms.CharField(max_length=30, widget = forms.PasswordInput)
+	password = forms.CharField(max_length=30, widget=forms.PasswordInput)
+	password_again = forms.CharField(max_length=30, widget=forms.PasswordInput)
+	invitation_key = forms.CharField(max_length=26, min_length=26, required=False, widget=forms.HiddenInput)
 	
 	def clean(self):
 		cd = self.cleaned_data	
@@ -21,7 +22,7 @@ class RegForm(forms.Form):
 				
 	def clean_email_again(self):
 		email_again = self.cleaned_data['email_again']
-		if CustomUser.objects.filter(email = email_again) or UnconfirmedUser.objects.filter(email = email_again):
+		if User.objects.filter(email = email_again) or UnconfirmedUser.objects.filter(email = email_again):
 			raise forms.ValidationError("An account already exists with this email")
 		return email_again
 		
@@ -30,9 +31,21 @@ class RegForm(forms.Form):
 		p = re.compile('\w{,20}')
 		if p.match(username).span() != (0, len(username)) or len(username)==0:
 			raise forms.ValidationError("Only alphanumeric characters and underscore in the username please")	
-		if CustomUser.objects.filter(username__iexact = username) or UnconfirmedUser.objects.filter(username__iexact = username):
+		if User.objects.filter(username__iexact = username) or UnconfirmedUser.objects.filter(username__iexact = username):
 			raise forms.ValidationError("Username already taken")
 		return username
+
+	def clean_invitation_key(self):
+		if False:	# if registration is closed
+			email = self.cleaned_data['email']
+			invitation_key = self.cleaned_data['invitation_key']
+			try:
+				unconfirmed_user = UnconfirmedUser.objects.get(invitation_key=invitation_key)
+			except:
+				raise forms.ValidationError("The invitation key was not valid.")
+			if email != unconfirmed_user.email:
+				raise forms.ValidationError("The invitation key was not valid.")
+			return invitation_key
 		
 class ConfirmForm(forms.Form):
 	confirmation_key = forms.CharField(max_length=26)
@@ -40,15 +53,29 @@ class ConfirmForm(forms.Form):
 	def clean(self):
 		cd = self.cleaned_data
 		try:
-			user = UnconfirmedUser.objects.get(identifier=cd['confirmation_key'])
-			cd['unconfirmed'] = user
+			unconfirmed_user = UnconfirmedUser.objects.get(confirmation_key=cd['confirmation_key'])
+			cd['unconfirmed'] = unconfirmed_user
 		except:
-			raise forms.ValidationError("The confirmation key was not valid")
+			raise forms.ValidationError("The confirmation key was not valid.")
 		return cd
+
+class InvitedForm(forms.Form):
+	invitation_key = forms.CharField(max_length=26)
 	
+	def clean(self):
+		try:
+			unconfirmed_user = UnconfirmedUser.objects.get(invitation_key=cd['invitation_key'])
+			cd['unconfirmed'] = unconfirmed_user
+		except:
+			raise forms.ValidationError("The invitation key was not valid.")
+		return cd
+
+class InviteForm(forms.Form):
+	email = forms.EmailField()
+
 class EditProfileForm(forms.Form):
 	'''For every field (not including either of the password fields),
-	there must be a field in CustomUser with the same name'''
+	there must be a field in User with the same name'''
 	#if field isn't required (not counting passwords), it must have a default value
 	
 	def __init__(self, *args, **kwargs): #must either pass 2 args or none
@@ -83,6 +110,3 @@ class EditProfileForm(forms.Form):
 		for item in cd:
 			result[item] = cd[item]			
 		return result
-		
-		
-		

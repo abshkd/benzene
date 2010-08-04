@@ -1,14 +1,14 @@
 from django.core import mail
-from django.contrib.auth.models import check_password
+from django.contrib.auth.models import User, check_password
 from django.test import TestCase
 from forms import EditProfileForm
-from models import UnconfirmedUser, CustomUser
+from models import UnconfirmedUser
 
 class UserbaseTest(TestCase):	
 	def test_registration(self):
 		self.client.post('/register/', {'username': 'user', 
-							'email': 'user@example.com', 'email_again': 'user@example.com',
-							'password': 'abc123', 'password_again': 'abc123'})
+			'email': 'user@example.com', 'email_again': 'user@example.com',
+			'password': 'abc123', 'password_again': 'abc123'})
 		
 		#tests that 1 email has been sent
 		self.assertEquals(len(mail.outbox), 1)
@@ -26,13 +26,12 @@ class UserbaseTest(TestCase):
 		self.assertEquals(len(CustomUser.objects.all()), 1)
 		
 	def test_edit_profile(self):
-		user = CustomUser.objects.create_user('user', 'user@example.com', 'abc123', already_hashed = False)
+		user = CustomUser.objects.create_user('user', 'user@example.com', 'abc123')
 		
 		#checks password hashing
-		self.assertTrue(check_password('abc123', user.password)
+		self.assertTrue(check_password('abc123', user.password))
 		
 		response = self.client.get('/profile/user/edit')
 		self.assertEquals(response.status_code, 200)
 		
 		#need to complete later
-		

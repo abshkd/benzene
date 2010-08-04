@@ -2,13 +2,13 @@
 from django.conf.urls.defaults import *
 from piston.resource import Resource
 from piston.authentication import OAuthAuthentication
-from handlers import CustomUserHandler
+from handlers import UserHandler
 
 auth = {'authentication': OAuthAuthentication(realm="Benzene Realm") }
-customuser = Resource(handler=CustomUserHandler, **auth)
+user = Resource(handler=UserHandler, **auth)
 
 urlpatterns = patterns('',
-	url(r'^user/(?P<username>[^/]+)/', customuser)
+	url(r'^user/(?P<username>[^/]+)/', user)
 )
 
 urlpatterns += patterns('piston.authentication',

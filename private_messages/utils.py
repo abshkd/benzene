@@ -30,7 +30,7 @@ class Conversation(object):
 def update_conversations(username, conversations, messages):
 	conversations = conversations[:]
 	for msg in messages:
-		if msg.sender.user_name == username:
+		if msg.sender.username == username:
 			conv = Conversation(msg.subject, msg.recip)
 		else:
 			conv = Conversation(msg.subject, msg.sender)

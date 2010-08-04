@@ -94,11 +94,9 @@ INSTALLED_APPS = (
 	'queued_search',
 )
 
-AUTHENTICATION_BACKENDS = (
-	'benzene.userbase.auth_backends.CustomUserModelBackend',
-)
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
 
-CUSTOM_USER_MODEL = 'userbase.CustomUser'
+AUTH_PROFILE_MODULE = 'userbase.UserProfile'
 
 if DEBUG:
 	EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
