@@ -1,7 +1,7 @@
 {% extends 'internal.html' %}
 {% block body %}
 {{ blog.name }}
-{% for post in blog.posts %}
+{% for post in blog.posts.all %}
 	{{ post.time }}
 	{% with post.author.user_name as author %}
 		<a href="{% url profile username=author %}">{{ author }}</a>

@@ -8,8 +8,12 @@
    </tr> 
    {% for conv in conversations %} 
    	<tr>
-   		<td><a href="{% url view_conversation key=conv.key  %}">{{ conv.subject }}</a></td>
-   		<td><a href="{% url profile username=conv.other_user.user_name %}">{{ conv.other_user.user_name }}</a></td>
+   		<td><a href="{% url view_conversation thread_id=conv.thread_id  %}">{{ conv.subject }}</a></td>
+		{% if conv.sender == request.user %}
+   		<td><a href="{% url profile username=conv.recip %}">{{ conv.recip.username }}</a></td>
+		{% else %}
+		<td><a href="{% url profile username=conv.recip %}">{{ conv.sender.username }}</a></td>
+		{% endif %}
    		<td>{{ conv.time|timesince }}</td>
    	</tr>	
 	{% endfor %} 	 

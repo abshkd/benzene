@@ -11,14 +11,6 @@ class RegForm(forms.Form):
 	password = forms.CharField(max_length=30, widget = forms.PasswordInput)
 	password_again = forms.CharField(max_length=30, widget = forms.PasswordInput)
 	
-	def clean(self):
-		cd = self.cleaned_data	
-		if cd['email'] != cd['email_again']:
-			raise forms.ValidationError("You entered 2 different emails")
-		if cd['password'] != cd['password_again']:
-			raise forms.ValidationError("You entered 2 different passwords")
-		return cd
-				
 	def clean_email_again(self):
 		email_again = self.cleaned_data['email_again']
 		if CustomUser.objects.filter(email = email_again) or UnconfirmedUser.objects.filter(email = email_again):
@@ -32,7 +24,15 @@ class RegForm(forms.Form):
 			raise forms.ValidationError("Only alphanumeric characters and underscore in the username please")	
 		if CustomUser.objects.filter(username__iexact = username) or UnconfirmedUser.objects.filter(username__iexact = username):
 			raise forms.ValidationError("Username already taken")
-		return username
+		return username	
+		
+	def clean(self):
+		cd = self.cleaned_data	
+		if cd['email'] != cd['email_again']:
+			raise forms.ValidationError("You entered 2 different emails")
+		if cd['password'] != cd['password_again']:
+			raise forms.ValidationError("You entered 2 different passwords")
+		return cd
 		
 class ConfirmForm(forms.Form):
 	confirmation_key = forms.CharField(max_length=26)

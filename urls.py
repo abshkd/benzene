@@ -15,6 +15,7 @@ urlpatterns = patterns('',
 	(r'^messages/', include('private_messages.urls')),
 	(r'^api/', include('userbase.api.urls')),
 	(r'^admin/', include(admin.site.urls)),
+	(r'^blogs/', include('blogs.urls')
 	
 	# Example:
 	# (r'^benzene/', include('benzene.foo.urls')),

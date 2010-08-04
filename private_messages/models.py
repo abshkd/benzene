@@ -8,13 +8,22 @@ class Message(models.Model):
 	sender = models.ForeignKey(CustomUser, related_name='outbox', null=True)
 	recip = models.ForeignKey(CustomUser, related_name='inbox')
 	time = models.DateTimeField(auto_now = True)
+	thread_id = models.PositiveIntegerField()
 	objects = MessageManager()
+	
+	def get_thread(self):
+		return Message.objects.filter(thread_id = self.thread_id)
+				
+	def save(self):
+		if not self.thread_id:
+			try:
+				self.thread_id = Message.objects.aggregate(models.Max('thread_id'))['thread_id__max']+1
+			except TypeError: #first message
+				self.thread_id = 1
+		super(Message, self).save()
 	
 	class Meta:
 		get_latest_by = 'time'
 		ordering = ['-time']
 
-	def get_thread(self):
-		return Message.objects.filter(models.Q(subject=self.subject), 
-				(models.Q(sender=self.sender) & models.Q(recip=self.recip)) | 
-				(models.Q(sender=self.recip) & models.Q(recip=self.sender)))
+
