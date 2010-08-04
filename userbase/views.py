@@ -20,8 +20,6 @@ def confirm(request, code=''):
 		if form.is_valid():
 			unconfirmed = form.cleaned_data['unconfirmed']
 			new_user = User.objects.create_user(unconfirmed.username, unconfirmed.email, unconfirmed.password)
-#user_profile = UserProfile(user=new_user)	# hack, see docs
-#user_profile.save()
 			new_user.save()
 			unconfirmed.delete()
 			login_user(request, new_user)

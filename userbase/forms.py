@@ -59,17 +59,6 @@ class ConfirmForm(forms.Form):
 			raise forms.ValidationError("The confirmation key was not valid.")
 		return cd
 
-class InvitedForm(forms.Form):
-	invitation_key = forms.CharField(max_length=26)
-	
-	def clean(self):
-		try:
-			unconfirmed_user = UnconfirmedUser.objects.get(invitation_key=cd['invitation_key'])
-			cd['unconfirmed'] = unconfirmed_user
-		except:
-			raise forms.ValidationError("The invitation key was not valid.")
-		return cd
-
 class InviteForm(forms.Form):
 	email = forms.EmailField()
 
