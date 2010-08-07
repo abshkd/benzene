@@ -10,24 +10,24 @@ class RegForm(forms.Form):
 	password = forms.CharField(max_length=30, widget=forms.PasswordInput)
 	password_again = forms.CharField(max_length=30, widget=forms.PasswordInput)
 	invitation_key = forms.CharField(max_length=26, min_length=26, required=False, widget=forms.HiddenInput)
-	
+
 	def clean_email_again(self):
 		email_again = self.cleaned_data['email_again']
 		if User.objects.filter(email = email_again) or UnconfirmedUser.objects.filter(email = email_again):
 			raise forms.ValidationError("An account already exists with this email")
 		return email_again
-		
+
 	def clean_username(self):
 		username = self.cleaned_data['username']
 		p = re.compile('\w{,20}')
 		if p.match(username).span() != (0, len(username)) or len(username)==0:
-			raise forms.ValidationError("Only alphanumeric characters and underscore in the username please")	
+			raise forms.ValidationError("Only alphanumeric characters and underscore in the username please")
 		if User.objects.filter(username__iexact = username) or UnconfirmedUser.objects.filter(username__iexact = username):
 			raise forms.ValidationError("Username already taken")
 		return username
 
-	def clean_invitation_key(self):
-		if False:	# if registration is closed
+	def clean_invitation_key(self):	# needs work, should throw up if specified but reg is open
+		if False:	# if registration is closed (True = open, False = closed)
 			email = self.cleaned_data['email']
 			invitation_key = self.cleaned_data['invitation_key']
 			try:
@@ -37,8 +37,7 @@ class RegForm(forms.Form):
 			if email != unconfirmed_user.email:
 				raise forms.ValidationError("The invitation key was not valid.")
 			return invitation_key
-		return username	
-		
+
 	def clean(self):
 		cd = self.cleaned_data	
 		if cd['email'] != cd['email_again']:

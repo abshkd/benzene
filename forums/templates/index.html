@@ -1,0 +1,15 @@
+{% extends 'internal.html' %}
+{% block html-title %}Forums{% endblock html-title %}
+{% block body %}
+<div id="forums">
+	<h2>Forums</h2>
+	{% for category in categories %}
+	<h3>{{ category.name }}</h3>
+	<ul>
+		{% for forum in category.forums %}
+		<li>{{ forum }}</li>
+		{% endfor %}
+	</ul>
+	{% endfor %}
+</div>
+{% endblock body %}

@@ -1,6 +1,6 @@
 def login_user(request, user):
 	"""
-	Log in a user without requiring creditials (using ``login`` from
+	Log in a user without requiring credentials (using ``login`` from
 	``django.contrib.auth``, first finding a matching backend).
 	Source is http://djangosnippets.org/snippets/1547/
 	"""
