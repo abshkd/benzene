@@ -35,17 +35,27 @@ def edit_profile(request, username):
 		form = EditProfileForm(request.POST, request.user)
 		if form.is_valid():
 			cd = form.cleaned_data
+			p = request.user.profile
 			for item in cd:
-				if getattr(request.user, item) != cd[item]:
-					setattr(request.user, item, cd[item])
+				try:
+					if getattr(request.user, item) != cd[item]:
+						setattr(request.user, item, cd[item])
+				except:
+					if getattr(p, item) != cd[item]:
+						setattr(p, item, cd[item])
 			request.user.save()
+			p.save()
 			return HttpResponseRedirect(reverse(profile, kwargs={'username': request.user.username}))
 		else:
 			return render_to_response(request, 'edit_profile.html', {'form': form})
 	user_data = {}
 	for field in EditProfileForm():
-		if 'password' not in field.name:
-			user_data[field.name] = getattr(request.user, field.name)
+		try:
+			if 'password' not in field.name:
+				user_data[field.name] = getattr(request.user, field.name)
+		except:
+			if 'password' not in field.name:
+				user_data[field.name] = getattr(request.user.profile, field.name)
 	form = EditProfileForm(initial=user_data)
 	return render_to_response(request, 'edit_profile.html', {'form': form})
 		
@@ -63,11 +73,8 @@ def profile(request, username = ''):
 @csrf_protect
 def reg(request, code=''):
 	if request.method == 'POST':
-		print "post"
 		form = RegForm(request.POST)
-		print "post-"
 		if form.is_valid():
-			print "valid"
 			cd = form.cleaned_data
 			ck = User.objects.make_random_password(length=26)
 			u = UnconfirmedUser(username=cd['username'], email=cd['email'],
@@ -78,12 +85,9 @@ def reg(request, code=''):
 				{'key': ck, 'site': settings.SITE_NAME, 'root': settings.SITE_ADDRESS }),
 				'noreply@example.com', [cd['email']])
 			request.session['email'] = cd['email']
-			print "return"
 			return HttpResponseRedirect('/success/')
 		else:
-			print "not"
 	elif request.method == 'GET':
-		print "get"
 		if True:	# Registration is open
 			form = RegForm()
 			return render_to_response(request, 'registration.html', {'form': form})
@@ -98,7 +102,6 @@ def reg(request, code=''):
 				return HttpResponseRedirect('/')
 		else:
 			return HttpResponseRedirect('/')
-	print "neither"
 	return HttpResponseRedirect('/')
 
 @login_required

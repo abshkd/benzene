@@ -1,9 +1,11 @@
 {% extends 'internal.html' %}
 {% block html-title %}{{ profile.username }}'s profile{% endblock html-title %}
 {% block body %}
+{% if profile.profile.avatar %}
 <div id="profile-avatar">
 	<img id="profile-avatar" src="{{profile.profile.avatar}}" alt="profile avatar" />
 </div>
+{% endif %}
 <div id="profile-sidebar">
 	<ul>
 		{% if not profile.is_active %}
@@ -22,6 +24,6 @@
 	</ul>
 </div>
 <div id="profile-text">
-	{{ profile.about }}
+	{{ profile.profile.about }}
 </div>
 {% endblock body %}

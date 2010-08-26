@@ -73,9 +73,10 @@ class EditProfileForm(forms.Form):
 		else:
 			super(EditProfileForm, self).__init__(**kwargs)
 	
+	# Any field that contains the string 'password' will not have a default value from the db.
 	stylesheet = forms.URLField(required=False)
-	avatar = forms.URLField()
-	about_text = forms.CharField(widget = forms.Textarea, required=False)
+	avatar = forms.URLField(required=False)
+	about = forms.CharField(widget=forms.Textarea, required=False)
 	email = forms.EmailField()
 	old_password = forms.CharField(max_length=30, widget = forms.PasswordInput, required=False)
 	new_password = forms.CharField(max_length=30, widget = forms.PasswordInput, required=False)
@@ -84,17 +85,17 @@ class EditProfileForm(forms.Form):
 	def clean(self):
 		result = {}
 		cd = self.cleaned_data
-		if cd.get('new_password') != cd.get('new_password_again'):
-			raise forms.ValidationError('New passwords did not match')		
-		if cd.get('new_password') or (cd.get('email') != self.user.email):
-			if check_password(cd.get('old_password'), self.user.password):
-				if cd.get('new_password'):
-					result['password'] = create_password(cd.get('new_password'))
+		if cd['new_password'] != cd['new_password_again']:
+			raise forms.ValidationError('New passwords did not match')
+		if cd['new_password'] or (cd['email'] != self.user.email):
+			if check_password(cd['old_password'], self.user.password):
+				if cd['new_password']:
+					result['password'] = cd['new_password']
 				else:
-					result['email'] = cd.get('email')
+					result['email'] = cd['email']
 			else:
 				raise forms.ValidationError('Old password is not correct')
 		del cd['email'], cd['old_password'], cd['new_password'], cd['new_password_again']
 		for item in cd:
-			result[item] = cd[item]			
+			result[item] = cd[item]
 		return result

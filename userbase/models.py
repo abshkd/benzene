@@ -15,7 +15,7 @@ class UserProfile(models.Model):
 	user = models.ForeignKey(User, unique=True)
 	rank = models.CharField(max_length=3, choices=RANKS, default='U')
 	donor = models.BooleanField(default=False)
-	avatar = models.URLField(default='/static/avatars/default.png')
+	avatar = models.URLField(default='http://irregulartimes.com/smileyface125thumb.gif')	# change
 	invites = models.SmallIntegerField(default=0)
 	about = models.TextField(blank=True)
 	stylesheet = models.URLField(blank=True)
