@@ -87,6 +87,7 @@ def reg(request, code=''):
 			request.session['email'] = cd['email']
 			return HttpResponseRedirect('/success/')
 		else:
+			return HttpResponse("Your registration form contained validation errors.")
 	elif request.method == 'GET':
 		if True:	# Registration is open
 			form = RegForm()

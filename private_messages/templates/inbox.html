@@ -1,21 +1,17 @@
 {% extends 'internal.html' %}
 {% block body %}
 <table> 
-   <tr class="colhead"> 
-   		<td>Subject</td> 
-   		<td>Sender</td> 
-   	    <td>Date</td> 
-   </tr> 
-   {% for conv in conversations %} 
-   	<tr>
-   		<td><a href="{% url view_conversation thread_id=conv.thread_id  %}">{{ conv.subject }}</a></td>
+	<tr class="colhead"><td>Subject</td><td>Sender</td><td>Date</td></tr>
+	{% for conv in conversations %}
+	<tr>
+		<td><a href="{% url view_conversation thread_id=conv.thread_id  %}">{{ conv.subject }}</a></td>
 		{% if conv.sender == request.user %}
-   		<td><a href="{% url profile username=conv.recip %}">{{ conv.recip.username }}</a></td>
+		<td><a href="{% url profile username=conv.recip %}">{{ conv.recip.username }}</a></td>
 		{% else %}
 		<td><a href="{% url profile username=conv.recip %}">{{ conv.sender.username }}</a></td>
 		{% endif %}
-   		<td>{{ conv.time|timesince }}</td>
-   	</tr>	
+		<td>{{ conv.time|timesince }}</td>
+	</tr>
 	{% endfor %} 	 
- </table>
+</table>
 {% endblock %}

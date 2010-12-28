@@ -7,7 +7,6 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.models import User
 from forms import MessageForm
 from models import Message
-from utils import get_conversations
 from base_utils import render_to_response
 
 @login_required	
@@ -32,18 +31,21 @@ def inbox(request, outbox=False):
 def view_conversation(request, thread_id=''):
 	thread_id = int(thread_id)
 	if thread_id:
-		conv = Message.objects.filter(thread_id=thread_id)
-		last = conv.latest()
-		if last.sender == request.user:
-			other_user = last.recip.id
-			form = MessageForm(initial={'subject': last.subject, 'recip': last.recip.id, 'thread_id': thread_id})
-		elif last.recip == request.user:
-			other_user = last.sender.id
-			form = MessageForm(initial={'subject': last.subject, 'recip': last.sender.id, 'thread_id': thread_id})
-		else:
+		try:
+			conv = Message.objects.filter(thread_id=thread_id)
+			last = conv.latest()
+			if last.sender == request.user:
+				other_user = last.recip.id
+				form = MessageForm(initial={'subject': last.subject, 'recip': last.recip.id, 'thread_id': thread_id})
+			elif last.recip == request.user:
+				other_user = last.sender.id
+				form = MessageForm(initial={'subject': last.subject, 'recip': last.sender.id, 'thread_id': thread_id})
+			else:
+				return HttpResponseNotFound()
+			form.fields['subject'].widget = HiddenInput()
+			return render_to_response(request, 'conversation.html', {'conversation': conv, 'form': form, 'other_user': other_user})
+		except:
 			return HttpResponseNotFound()
-		form.fields['subject'].widget = HiddenInput()
-		return render_to_response(request, 'conversation.html', {'conversation': conv, 'form': form, 'other_user': other_user})
 	return HttpResponseNotFound()
 
 @login_required
@@ -64,7 +66,7 @@ def send_message(request):
 	other_user = form['recip']
 	if form.is_valid():
 		cd = form.cleaned_data
-		m = Message(sender=request.user, recip=cd['recip'], subject=cd['subject'], content=cd['content'], thread_id=cd.get('thread_id'))
+		m = Message(sender=request.user, recip=cd['recip'], subject=cd['subject'], content=cd['content'], thread_id=cd['thread_id'])
 		m.save()
 		return HttpResponseRedirect(reverse('inbox'))
 	return HttpResponse('There was an error with your message')

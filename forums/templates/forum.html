@@ -1,0 +1,27 @@
+{% extends 'internal.html' %}
+{% block html-title %}Forums > {{ forum.name }}{% endblock html-title %}
+{% block body %}
+<div id="forum_header"><h2><a href="{% url forum_index %}">Forums</a> > {{ forum.name }}</h2></div>
+<div id="forum_links">
+<div id="forum_pages">
+	{% if threads.number != 1 %}
+		<a href="?page=1">First</a>
+	{% endif %}
+	{% if threads.has_previous %}
+		<a href="?page={{ threads.previous_page_number }}">Previous</a>
+	{% endif %}
+	{% if threads.has_next %}
+		<a href="?page={{ threads.next_page_number }}">Next</a>
+	{% endif %}
+	{% if threads.number != threads.paginator.num_pages %}
+		<a href="?page={{ threads.paginator.num_pages }}">Last</a>
+	{% endif %}
+</div>
+
+<div id="forum_threads">
+	<table>
+	{% for thread in threads.object_list %}
+		<tr><td><a href="{% url view_thread thread_id=thread.id %}">{{ thread.subject }}</a></td></tr>
+	{% endfor %}
+	</table>
+{% endblock body %}

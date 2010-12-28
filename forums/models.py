@@ -12,6 +12,7 @@ class Forum(models.Model):
 class Thread(models.Model):
 	subject = models.CharField(max_length=100)
 	forum = models.ForeignKey(Forum)
+	locked = models.BooleanField()
 	poll = models.ForeignKey(Poll, blank=True, null=True)
 
 	def __unicode__(self):
