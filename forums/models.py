@@ -14,6 +14,7 @@ class Thread(models.Model):
 	forum = models.ForeignKey(Forum)
 	locked = models.BooleanField()
 	poll = models.ForeignKey(Poll, blank=True, null=True)
+	last_read = models.ManyToManyField(User, through='LastRead')
 
 	def __unicode__(self):
 		return self.subject
@@ -30,3 +31,8 @@ class Post(models.Model):
 	class Meta(object):
 		get_latest_by = 'time'
 		ordering = ['-time']
+
+class LastRead(models.Model):
+	user = models.ForeignKey(User)
+	thread = models.ForeignKey(Thread)
+	post = models.ForeignKey(Post)

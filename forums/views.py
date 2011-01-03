@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from base_utils import render_to_response
-from models import Forum, Thread, Post
+from models import Forum, Thread, Post, LastRead
+from django.contrib.auth.models import User
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from forms import PostForm
@@ -44,29 +45,38 @@ def forum(request, forum_id):
 @login_required
 @csrf_protect
 def thread(request, thread_id):
-		thread = Thread.objects.get(id=thread_id)
-		posts_per_page = 2	# this should be a lookup to userprofile
-		paginator = Paginator(Post.objects.filter(thread=thread_id).order_by('time'), posts_per_page)
-		page = int(request.GET.get('page', 1))
+	thread = Thread.objects.get(id=thread_id)
+	posts_per_page = 5	# this should be a lookup to userprofile
+	paginator = Paginator(Post.objects.filter(thread=thread_id).order_by('time'), posts_per_page)
+	page = int(request.GET.get('page', 1))
 
-		if thread_id: thread_id = int(thread_id)
-		if request.method == 'POST':
-			form = PostForm(request.POST)
-			if form.is_valid():
-				cd = form.cleaned_data
-				p = Post(content=cd['content'], author=request.user, thread=thread)
-				p.save()
-				page = paginator.num_pages
-			else:
-				return HttpResponse('Error posting; post form was not valid.')
+	if thread_id: thread_id = int(thread_id)
+	if request.method == 'POST':
+		form = PostForm(request.POST)
+		if form.is_valid():
+			cd = form.cleaned_data
+			p = Post(content=cd['content'], author=request.user, thread=thread)
+			p.save()
+			page = paginator.num_pages
+		else:
+			return HttpResponse('Error posting; post form was not valid.')
 
-		try:
-			posts = paginator.page(page)
-		except (EmptyPage, InvalidPage):
-			posts = paginator.page(paginator.num_pages)
+	try:
+		posts = paginator.page(page)
+	except (EmptyPage, InvalidPage):
+		posts = paginator.page(paginator.num_pages)
 
-		form = PostForm()
-		return render_to_response(request, 'thread.html', {'thread': thread, 'posts': posts, 'form': form})
-#except:
-#		print "404444444444444'd!"
-#return HttpResponseNotFound("404")
+	last_post = posts.object_list[len(posts.object_list)-1]
+	try:
+		lr = LastRead.objects.get(thread=thread, user=request.user)
+		if lr.post.id < last_post.id:
+			lr.post = last_post
+			lr.save()
+		else:
+			last_post = lr.post
+	except:
+		lr = LastRead(thread=thread, user=request.user, post=last_post)
+		lr.save()
+
+	form = PostForm()
+	return render_to_response(request, 'thread.html', {'thread': thread, 'posts': posts, 'form': form, 'last_read': last_post})
