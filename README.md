@@ -53,4 +53,4 @@
 	# Go to your benzene root directory
 	
 	python manage.py syncdb
-	python manage.py new_benzene
+	python manage.py benzene

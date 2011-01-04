@@ -23,7 +23,7 @@
 
 <div id="forum_posts">
 	{% for post in posts.object_list %}
-		<table><tr><td>{{ post.author }}</td><td>{{ post.time }}</td></tr>
+		<table class="forum_post {% if post.id > last_read %}forum_unread{% endif %}"><tr><td>{{ post.author }}</td><td>{{ post.time }}</td></tr>
 		<tr><td colspan=2>{{ post.content }}</td></tr></table>
 		<hr />
 	{% endfor %}

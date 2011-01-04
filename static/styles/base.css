@@ -5,3 +5,41 @@
 #header ul {
 	display: inline;
 }
+
+table.forum_post {
+	background: #000;
+	color: #fff;
+}
+
+table.forum_unread {
+	border: 3px solid yellow;
+}
+
+div#header {
+	margin: 100px;
+}
+
+div#logo {
+	position: absolute;
+	top: 1%;
+	left: 47%;
+}
+
+div#navigation {
+	position: absolute;
+	top: 1%;
+	left: 0;
+}
+
+div#userinfo {
+	position: absolute;
+	top: 1%;
+	right: 0;
+}
+
+#userinfo li {
+	display: inline;
+}
+
+a { text-decoration: none; }
+img { border: 0px; }

@@ -67,16 +67,16 @@ def thread(request, thread_id):
 		posts = paginator.page(paginator.num_pages)
 
 	last_post = posts.object_list[len(posts.object_list)-1]
+	last_read = 0
 	try:
 		lr = LastRead.objects.get(thread=thread, user=request.user)
+		last_read = lr.post.id
 		if lr.post.id < last_post.id:
 			lr.post = last_post
 			lr.save()
-		else:
-			last_post = lr.post
 	except:
 		lr = LastRead(thread=thread, user=request.user, post=last_post)
 		lr.save()
 
 	form = PostForm()
-	return render_to_response(request, 'thread.html', {'thread': thread, 'posts': posts, 'form': form, 'last_read': last_post})
+	return render_to_response(request, 'thread.html', {'thread': thread, 'posts': posts, 'form': form, 'last_read': last_read})
