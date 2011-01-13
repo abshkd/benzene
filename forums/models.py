@@ -36,3 +36,7 @@ class LastRead(models.Model):
 	user = models.ForeignKey(User)
 	thread = models.ForeignKey(Thread)
 	post = models.ForeignKey(Post)
+
+class Profile(models.Model):
+	user = models.OneToOneField(User, related_name='forum_profile')
+	show_avatars = models.BooleanField(default=True)
